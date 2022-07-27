@@ -1,0 +1,146 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "gin开发的后台管理系统",
+        "title": "后台系统",
+        "contact": {},
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/user/login": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "用户登录",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer 用户令牌",
+                        "name": "Authorization",
+                        "in": "header"
+                    },
+                    {
+                        "description": "查询参数",
+                        "name": "data",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/vo.LoginRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "返回用户token",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/vo.LoginResponse"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/user/publicKey": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "获取RSA公钥",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer 用户令牌",
+                        "name": "Authorization",
+                        "in": "header"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "返回用户token",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/vo.GetRsaKeyResponse"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "response.Response": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "description": "状态码",
+                    "type": "integer"
+                },
+                "data": {
+                    "description": "响应数据",
+                    "type": "any"
+                },
+                "message": {
+                    "description": "响应消息",
+                    "type": "string"
+                }
+            }
+        },
+        "vo.GetRsaKeyResponse": {
+            "type": "object",
+            "properties": {
+                "publicKey": {
+                    "description": "公钥",
+                    "type": "string"
+                }
+            }
+        },
+        "vo.LoginRequest": {
+            "type": "object",
+            "properties": {
+                "password": {
+                    "description": "登录密码",
+                    "type": "string"
+                },
+                "username": {
+                    "description": "账号|手机号|邮箱",
+                    "type": "string"
+                }
+            }
+        },
+        "vo.LoginResponse": {
+            "type": "object",
+            "properties": {
+                "token": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

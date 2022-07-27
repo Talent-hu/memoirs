@@ -1,0 +1,89 @@
+definitions:
+  response.Response:
+    properties:
+      code:
+        description: 状态码
+        type: integer
+      data:
+        description: 响应数据
+        type: any
+      message:
+        description: 响应消息
+        type: string
+    type: object
+  vo.GetRsaKeyResponse:
+    properties:
+      publicKey:
+        description: 公钥
+        type: string
+    type: object
+  vo.LoginRequest:
+    properties:
+      password:
+        description: 登录密码
+        type: string
+      username:
+        description: 账号|手机号|邮箱
+        type: string
+    type: object
+  vo.LoginResponse:
+    properties:
+      token:
+        type: string
+    type: object
+info:
+  contact: {}
+  description: gin开发的后台管理系统
+  title: 后台系统
+  version: 1.0.0
+paths:
+  /user/login:
+    post:
+      parameters:
+      - description: Bearer 用户令牌
+        in: header
+        name: Authorization
+        type: string
+      - description: 查询参数
+        in: body
+        name: data
+        schema:
+          $ref: '#/definitions/vo.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 返回用户token
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/vo.LoginResponse'
+                message:
+                  type: string
+              type: object
+      summary: 用户登录
+  /user/publicKey:
+    get:
+      parameters:
+      - description: Bearer 用户令牌
+        in: header
+        name: Authorization
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 返回用户token
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/vo.GetRsaKeyResponse'
+                message:
+                  type: string
+              type: object
+      summary: 获取RSA公钥
+swagger: "2.0"

@@ -1,0 +1,46 @@
+
+system:
+   name: memoirs
+   Port: '8888'
+   cache-mode: local_cache  # 1.local_cache  2.redis
+
+
+mysql:
+  username: htc
+  password: Htc123321
+  path: 112.124.153.115
+  port: 3309
+  db-name: memoirs
+  config: charset=utf8mb4&parseTime=true&loc=Local
+  max-idle-conns: 20
+  max-open-conns: 20
+  log-mode: debug
+  log-zap: true
+
+
+# redis 配置
+redis:
+  addr: 101.132.251.60:6379
+  password: 123456
+  db: 0
+  max-idle: 10 # 最大空闲链接数
+  max-active: 0 # 数据库最大链接数，0表示不控制最大链接数
+  idle-timeout: 120  //最大空闲时间
+
+# zap log
+zap:
+  level: debug
+  format: json
+  prefix: ''
+  director: log
+  show-line: true
+  encode-level: LowercaseLevelEncoder
+  stacktrace-key: 'stacktrace'
+  log-in-console: true
+
+jwt:
+  sign-key: memoirs-key
+  app-secret: abcdefghijklmnopqrstuvwxyz
+  app-iss: localhost:8888
+  expire-time: 604800
+  buffer-time: 86400
