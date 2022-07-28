@@ -11,7 +11,7 @@ import (
 func InitRouter() *gin.Engine {
 	gin.SetMode(gin.DebugMode)
 	router := gin.New()
-	router.Use(middleware.GinLogger(), gin.Recovery(), middleware.Cors())
+	router.Use(middleware.GinLogger(), gin.Recovery(), middleware.Cors(), middleware.RecordOptions())
 	publicGroup := router.Group("")
 	{
 		module.RouterGroupApp.UserRouter.InitUserRouter(publicGroup)

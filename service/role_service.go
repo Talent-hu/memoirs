@@ -5,8 +5,7 @@ import (
 	"memoirs/model"
 )
 
-type RoleService struct {}
-
+type RoleService struct{}
 
 func (this *RoleService) GetRoleInfo(userId uint) ([]*model.Role, error) {
 	var roleList []*model.Role
@@ -15,5 +14,5 @@ func (this *RoleService) GetRoleInfo(userId uint) ([]*model.Role, error) {
 		Where("user_role.user_id = ?", userId).
 		Preload("Menus").
 		Find(&roleList).Error
-    return roleList,err
+	return roleList, err
 }

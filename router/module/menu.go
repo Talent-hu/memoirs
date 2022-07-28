@@ -6,7 +6,7 @@ import (
 	"memoirs/middleware"
 )
 
-type MenuRouter struct {}
+type MenuRouter struct{}
 
 func (this *MenuRouter) InitMenuRouter(Router *gin.RouterGroup) {
 	//userRouter := Router.Group("menu")
@@ -14,6 +14,7 @@ func (this *MenuRouter) InitMenuRouter(Router *gin.RouterGroup) {
 	menuApi := api.ApiGroupApp.MenuApi
 	{
 		privateRouter.POST("/add", menuApi.AddMenu)
-		privateRouter.GET("/buildTree", menuApi.BuildMenuList)
+		privateRouter.GET("/tree", menuApi.QueryMenuTree)
+		privateRouter.GET("/list", menuApi.QueryMenuList)
 	}
 }
