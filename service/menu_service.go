@@ -30,6 +30,7 @@ func (this *MenuService) QueryMenuInfo(userId uint) ([]vo.MenuTree, error) {
 		var menuInfo vo.MenuTree
 		_ = utils.CopyProperties(&menu, &menuInfo)
 		menuInfo.ID = menu.ID
+		menuInfo.Children = []vo.MenuTree{}
 		menuTree = append(menuTree, menuInfo)
 	}
 	// 去重
