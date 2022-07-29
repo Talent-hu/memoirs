@@ -44,3 +44,9 @@ func (this *MenuService) QueryMenuInfo(userId uint) ([]vo.MenuTree, error) {
 	}
 	return menuLst, err
 }
+
+func (this *MenuService) DeleteMenu(menuIds []uint) (model.Menu, error) {
+	var menus model.Menu
+	err := global.DB.Where("id in (?)", menuIds).Delete(&menus).Error
+	return menus, err
+}

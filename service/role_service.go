@@ -16,3 +16,22 @@ func (this *RoleService) GetRoleInfo(userId uint) ([]*model.Role, error) {
 		Find(&roleList).Error
 	return roleList, err
 }
+
+func (this *RoleService) DelRelation(roleId uint, menuIds []uint) error {
+	var roleMenu model.RoleMenu
+	err := global.DB.Where("role_id = ? and menu_id in (?)", roleId, menuIds).
+		Delete(&roleMenu).Error
+	return err
+}
+
+func (this *RoleService) AddRoleAndMenu(roleId uint, menuIds []uint) error {
+	var roleMenus []model.RoleMenu
+	for _, menuId := range menuIds {
+		roleMenu := new(model.RoleMenu)
+		roleMenu.RoleId = roleId
+		roleMenu.MenuId = menuId
+		roleMenus = append(roleMenus, *roleMenu)
+	}
+	err := global.DB.Model(&model.RoleMenu{}).CreateInBatches(roleMenus, len(roleMenus)).Error
+	return err
+}

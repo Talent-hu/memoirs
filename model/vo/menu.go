@@ -29,3 +29,7 @@ type MenuTree struct {
 	ID        uint       `json:"menuId"`
 	Children  []MenuTree `json:"children"`
 }
+
+type RemoveMenu struct {
+	MenuIds []uint `json:"menuIds"` // 菜单ID列表
+}

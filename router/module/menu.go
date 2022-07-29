@@ -16,5 +16,6 @@ func (this *MenuRouter) InitMenuRouter(Router *gin.RouterGroup) {
 		privateRouter.POST("/add", menuApi.AddMenu)
 		privateRouter.GET("/tree", menuApi.QueryMenuTree)
 		privateRouter.GET("/list", menuApi.QueryMenuList)
+		privateRouter.GET("/remove", menuApi.RemoveMenu)
 	}
 }

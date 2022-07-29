@@ -11,6 +11,12 @@ import (
 
 type MenuApi struct{}
 
+// @Tag MenuApi
+// @Summary 查询用户下菜单列表
+// @Produce application/json
+// @Param Authorization header string false "Bearer 用户令牌"
+// @Success 200 {object} response.Response{data=vo.MenuTree,message=string} "返回用户token"
+// @Router /menu/list [post]
 func (this *MenuApi) QueryMenuList(ctx *gin.Context) {
 	userId := utils.GetUserID(ctx)
 	menus, err := menuService.QueryMenuInfo(userId)
@@ -42,6 +48,12 @@ func (this *MenuApi) AddMenu(ctx *gin.Context) {
 	response.Ok(ctx)
 }
 
+// @Tag MenuApi
+// @Summary 查询用户下菜单树
+// @Produce application/json
+// @Param Authorization header string false "Bearer 用户令牌"
+// @Success 200 {object} response.Response{data=vo.MenuTree,message=string} "返回用户token"
+// @Router /menu/tree [post]
 func (this *MenuApi) QueryMenuTree(ctx *gin.Context) {
 	userId := utils.GetUserID(ctx)
 	menus, err := menuService.QueryMenuInfo(userId)
@@ -73,4 +85,26 @@ func findChild(rootNode vo.MenuTree, menuList []vo.MenuTree) vo.MenuTree {
 		}
 	}
 	return rootNode
+}
+
+func (this *MenuApi) RemoveMenu(ctx *gin.Context) {
+	var menuIds vo.RemoveMenu
+	_ = ctx.ShouldBindJSON(&menuIds)
+	_, err := menuService.DeleteMenu(menuIds.MenuIds)
+	if err != nil {
+		response.FailWithMessage(ctx, "删除菜单失败")
+		return
+	}
+	response.Ok(ctx)
+}
+
+func (this *MenuApi) DelMenuAndRoleRel(ctx *gin.Context) {
+	var delRel vo.RoleMenuRelation
+	_ = ctx.ShouldBindJSON(&delRel)
+	err := roleService.DelRelation(delRel.RoleId, delRel.MenuIds)
+	if err != nil {
+		response.FailWithMessage(ctx, "删除菜单权限失败！")
+		return
+	}
+	response.Ok(ctx)
 }
