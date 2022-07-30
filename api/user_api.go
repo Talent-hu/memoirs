@@ -38,13 +38,14 @@ func (this *UserApi) Login(ctx *gin.Context) {
 		return
 	}
 	// RSA 私钥解密
-	/*privateKey := global.Redis.Get(context.Background(), "rsa_private").Val()
+	privateKey := global.Redis.Get(context.Background(), "rsa_private").Val()
 	password, err := utils.RsaDecrypt([]byte(loginReq.Password), []byte(privateKey))
 	if err != nil {
 		response.FailWithMessage(ctx, "用户名或密码错误")
 		return
-	}*/
-	encPwd := utils.GenerateMD5(loginReq.Password)
+	}
+	encPwd := utils.GenerateMD5(string(password))
+	//encPwd := utils.GenerateMD5(loginReq.Password)
 	if user.Password != encPwd {
 		response.FailWithMessage(ctx, "用户名或密码错误")
 		return
