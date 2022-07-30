@@ -32,20 +32,21 @@ func (this *UserApi) Login(ctx *gin.Context) {
 		response.FailWithMessage(ctx, err.Error())
 		return
 	}
-	user, err := userService.Login(loginReq.Username)
-	if err != nil {
-		response.FailWithMessage(ctx, "用户名或密码错误")
-		return
-	}
 	// RSA 私钥解密
-	privateKey := global.Redis.Get(context.Background(), "rsa_private").Val()
+	/*privateKey := global.Redis.Get(context.Background(), "rsa_private").Val()
+	account, _ := utils.RsaDecrypt([]byte(loginReq.Account), []byte(privateKey))
 	password, err := utils.RsaDecrypt([]byte(loginReq.Password), []byte(privateKey))
 	if err != nil {
 		response.FailWithMessage(ctx, "用户名或密码错误")
 		return
 	}
-	encPwd := utils.GenerateMD5(string(password))
-	//encPwd := utils.GenerateMD5(loginReq.Password)
+	encPwd := utils.GenerateMD5(string(password))*/
+	user, err := userService.Login(loginReq.Account)
+	if err != nil {
+		response.FailWithMessage(ctx, "用户名或密码错误")
+		return
+	}
+	encPwd := utils.GenerateMD5(loginReq.Password)
 	if user.Password != encPwd {
 		response.FailWithMessage(ctx, "用户名或密码错误")
 		return

@@ -3,7 +3,7 @@ package vo
 type Empty struct{}
 
 type LoginRequest struct {
-	Username string `json:"username"` // 账号|手机号|邮箱
+	Account  string `json:"account"`  // 账号|手机号|邮箱
 	Password string `json:"password"` // 登录密码
 }
 
