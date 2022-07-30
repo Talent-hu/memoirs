@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"memoirs/common/constant"
 	"memoirs/common/response"
+	"memoirs/global"
 	"memoirs/model"
 	"memoirs/model/vo"
 	"memoirs/utils"
@@ -21,6 +22,7 @@ func (this *MenuApi) QueryMenuList(ctx *gin.Context) {
 	userId := utils.GetUserID(ctx)
 	menus, err := menuService.QueryMenuInfo(userId)
 	if err != nil {
+		global.Log.Error(err.Error())
 		response.FailWithMessage(ctx, "系统错误，未查询到对应数据。")
 		return
 	}

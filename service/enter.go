@@ -1,7 +1,5 @@
 package service
 
-import "memoirs/global"
-
 type ServiceGroup struct {
 	UserService
 	RoleService
@@ -9,5 +7,3 @@ type ServiceGroup struct {
 }
 
 var ServiceGroupApp = new(ServiceGroup)
-
-var db = global.DB
