@@ -9,7 +9,6 @@ import (
 	"io/ioutil"
 	"memoirs/global"
 	"net/http"
-	"strconv"
 	"strings"
 )
 
@@ -30,10 +29,11 @@ func RecordOptions() gin.HandlerFunc {
 		ctx.Next()
 		jsonStr := fmt.Sprintf("%s\n", strings.ReplaceAll(blw.body.String(), "\\\"", "\""))
 		fmt.Println("响应数据为：", jsonStr)
-		global.Log.Info("read body from response:",
-			zap.String("url", ctx.Request.URL.String()),
-			zap.String("status", strconv.Itoa(ctx.Writer.Status())),
-			zap.String("responseBody", blw.body.String()))
+		/*global.Log.Info("read body from response:",
+		zap.String("url", ctx.Request.URL.String()),
+		zap.String("status", strconv.Itoa(ctx.Writer.Status())),
+		zap.String("responseBody", blw.body.String()))*/
+
 	}
 }
 

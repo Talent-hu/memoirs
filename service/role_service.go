@@ -1,7 +1,6 @@
 package service
 
 import (
-	"memoirs/global"
 	"memoirs/model"
 )
 
@@ -9,7 +8,7 @@ type RoleService struct{}
 
 func (this *RoleService) GetRoleInfo(userId uint) ([]*model.Role, error) {
 	var roleList []*model.Role
-	err := global.DB.Model(&model.Role{}).Select("role.role_code,role.role_name,role.parent_id,role.id").
+	err := db.Model(&model.Role{}).Select("role.role_code,role.role_name,role.parent_id,role.id").
 		Joins("left join user_role on user_role.role_id = role.id").
 		Where("user_role.user_id = ?", userId).
 		Preload("Menus").
@@ -19,7 +18,7 @@ func (this *RoleService) GetRoleInfo(userId uint) ([]*model.Role, error) {
 
 func (this *RoleService) DelRelation(roleId uint, menuIds []uint) error {
 	var roleMenu model.RoleMenu
-	err := global.DB.Where("role_id = ? and menu_id in (?)", roleId, menuIds).
+	err := db.Where("role_id = ? and menu_id in (?)", roleId, menuIds).
 		Delete(&roleMenu).Error
 	return err
 }
@@ -32,24 +31,24 @@ func (this *RoleService) AddRoleAndMenu(roleId uint, menuIds []uint) error {
 		roleMenu.MenuId = menuId
 		roleMenus = append(roleMenus, *roleMenu)
 	}
-	err := global.DB.Model(&model.RoleMenu{}).CreateInBatches(roleMenus, len(roleMenus)).Error
+	err := db.Model(&model.RoleMenu{}).CreateInBatches(roleMenus, len(roleMenus)).Error
 	return err
 }
 
 func (this *RoleService) AddRole(role model.Role) error {
-	err := global.DB.Create(&role).Error
+	err := db.Create(&role).Error
 	return err
 }
 
 func (this *RoleService) QueryList() ([]model.Role, error) {
 	var roleList []model.Role
-	err := global.DB.Find(&roleList).Error
+	err := db.Find(&roleList).Error
 	return roleList, err
 }
 
 func (this *RoleService) QueryUserRoleList(userId uint) ([]model.Role, error) {
 	var roleList []model.Role
-	err := global.DB.Model(&model.UserRole{}).
+	err := db.Model(&model.UserRole{}).
 		Joins("left join role on role.id = user_role.role_id").
 		Where("user_role.user_id=?", userId).
 		Find(&roleList).Error
@@ -57,14 +56,14 @@ func (this *RoleService) QueryUserRoleList(userId uint) ([]model.Role, error) {
 }
 
 func (this *RoleService) UpdateRole(role model.Role) error {
-	err := global.DB.Table("role").
+	err := db.Table("role").
 		Where("id = ?", role.ID).
 		Updates(role).Error
 	return err
 }
 
 func (this *RoleService) DeleteRole(roleId uint) error {
-	tx := global.DB.Begin()
+	tx := db.Begin()
 	err := tx.Delete(&model.Role{}, roleId).Error
 	err = tx.Delete(&model.RoleMenu{}, roleId).Error
 	tx.Commit()

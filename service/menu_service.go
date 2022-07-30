@@ -1,7 +1,7 @@
 package service
 
 import (
-	"memoirs/global"
+	"memoirs/common/constant"
 	"memoirs/model"
 	"memoirs/model/vo"
 	"memoirs/utils"
@@ -10,13 +10,23 @@ import (
 type MenuService struct{}
 
 func (this *MenuService) AddMenu(menu *model.Menu) error {
-	err := global.DB.Create(menu).Error
+	db = db.Begin()
+	err := db.Create(&menu).Error
+	// 给超级管理员赋予权限
+	var roleMenu model.RoleMenu
+	roleMenu.MenuId = menu.ID
+	roleMenu.RoleId = constant.ROOT_ROLE_ID
+	err = db.Create(&roleMenu).Error
+	db.Commit()
+	if err != nil {
+		db.Callback()
+	}
 	return err
 }
 
 func (this *MenuService) QueryMenuInfo(userId uint) ([]vo.MenuTree, error) {
 	var menuList []model.Menu
-	err := global.DB.Table("user_role").
+	err := db.Table("user_role").
 		Joins("left join role_menu on role_menu.role_id = user_role.role_id").
 		Joins("left join menu on menu.id = role_menu.menu_id").
 		Where("user_role.user_id = ?", userId).
@@ -47,6 +57,6 @@ func (this *MenuService) QueryMenuInfo(userId uint) ([]vo.MenuTree, error) {
 
 func (this *MenuService) DeleteMenu(menuIds []uint) (model.Menu, error) {
 	var menus model.Menu
-	err := global.DB.Where("id in (?)", menuIds).Delete(&menus).Error
+	err := db.Where("id in (?)", menuIds).Delete(&menus).Error
 	return menus, err
 }

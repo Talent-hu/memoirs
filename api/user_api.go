@@ -110,20 +110,43 @@ func (this *UserApi) GetUserInfo(ctx *gin.Context) {
 	userId := utils.GetUserID(ctx)
 	userInfo, err := userService.GetUserInfo(userId)
 	if err != nil {
-		response.FailWithMessage(ctx,"系统错误，未查询到对应数据。")
+		response.FailWithMessage(ctx, "系统错误，未查询到对应数据。")
 		return
 	}
 	if len(userInfo.Roles) <= 0 {
-		response.FailWithMessage(ctx,"用户还没有赋予权限，请联系管理员授权")
+		response.FailWithMessage(ctx, "用户还没有赋予权限，请联系管理员授权")
 		return
 	}
-	resp := new(vo.GetUserInfoResponse)
-	_ = utils.CopyProperties(userInfo,resp)
+	resp := new(vo.UserInfoResponse)
+	_ = utils.CopyProperties(userInfo, resp)
 	for _, role := range userInfo.Roles {
 		roleModel := new(vo.RoleModel)
 		roleModel.RoleName = role.RoleName
 		roleModel.RoleCode = role.RoleCode
-		resp.Roles = append(resp.Roles,*roleModel)
+		resp.Roles = append(resp.Roles, *roleModel)
 	}
-	response.OkWithData(ctx,resp)
+	response.OkWithData(ctx, resp)
+}
+
+func (this *UserApi) QueryUserList(ctx *gin.Context) {
+	var pageInfo vo.BasePage
+	_ = ctx.ShouldBindJSON(&pageInfo)
+	list, err := userService.QueryUserList(pageInfo.PageSize, pageInfo.Offset())
+	if err != nil {
+		response.FailWithMessage(ctx, "系统错误，未查询到对应数据。")
+		return
+	}
+	var userInfoList []vo.UserInfoResponse
+	for _, user := range list {
+		var userInfo vo.UserInfoResponse
+		_ = utils.CopyProperties(user, &userInfo)
+		for _, role := range user.Roles {
+			roleModel := new(vo.RoleModel)
+			roleModel.RoleName = role.RoleName
+			roleModel.RoleCode = role.RoleCode
+			userInfo.Roles = append(userInfo.Roles, *roleModel)
+		}
+		userInfoList = append(userInfoList, userInfo)
+	}
+	response.OkWithData(ctx, userInfoList)
 }

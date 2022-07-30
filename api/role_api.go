@@ -3,6 +3,7 @@ package api
 import (
 	"github.com/gin-gonic/gin"
 	"memoirs/common/response"
+	"memoirs/global"
 	"memoirs/model"
 	"memoirs/model/vo"
 	"memoirs/utils"
@@ -16,7 +17,14 @@ func (this *RoleApi) QueryRoleAllList(ctx *gin.Context) {
 		response.FailWithMessage(ctx, "查询角色列表失败")
 		return
 	}
-	response.OkWithData(ctx, list)
+	var roleInfoList []vo.RoleInfo
+	for _, role := range list {
+		var roleInfo vo.RoleInfo
+		_ = utils.CopyProperties(&role, &roleInfo)
+		roleInfo.RoleId = role.ID
+		roleInfoList = append(roleInfoList, roleInfo)
+	}
+	response.OkWithData(ctx, roleInfoList)
 }
 
 func (this *RoleApi) QueryUserRoleList(ctx *gin.Context) {
@@ -26,7 +34,14 @@ func (this *RoleApi) QueryUserRoleList(ctx *gin.Context) {
 		response.FailWithMessage(ctx, "查询角色列表失败")
 		return
 	}
-	response.OkWithData(ctx, list)
+	var roleInfoList []vo.RoleInfo
+	for _, role := range list {
+		var roleInfo vo.RoleInfo
+		_ = utils.CopyProperties(&role, &roleInfo)
+		roleInfo.RoleId = role.ID
+		roleInfoList = append(roleInfoList, roleInfo)
+	}
+	response.OkWithData(ctx, roleInfoList)
 }
 
 func (this *RoleApi) AddRole(ctx *gin.Context) {
@@ -47,6 +62,7 @@ func (this *RoleApi) AddRoleAndMenu(ctx *gin.Context) {
 	_ = ctx.ShouldBindJSON(&relation)
 	err := roleService.AddRoleAndMenu(relation.RoleId, relation.MenuIds)
 	if err != nil {
+		global.Log.Error(err.Error())
 		response.FailWithMessage(ctx, "新增权限失败")
 		return
 	}
@@ -54,10 +70,11 @@ func (this *RoleApi) AddRoleAndMenu(ctx *gin.Context) {
 }
 
 func (this *RoleApi) UpdateRole(ctx *gin.Context) {
-	var roleReq vo.RoleUpdate
+	var roleReq vo.RoleInfo
 	_ = ctx.ShouldBindJSON(&roleReq)
 	var role model.Role
 	_ = utils.CopyProperties(&roleReq, &role)
+	role.ID = roleReq.RoleId
 	err := roleService.UpdateRole(role)
 	if err != nil {
 		response.FailWithMessage(ctx, "更新失败！")
