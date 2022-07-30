@@ -43,6 +43,6 @@ func FailWithMessage(ctx *gin.Context, message string) {
 	resultJson(ctx, http.StatusInternalServerError, SERVER_ERR, message, NULL_DATA)
 }
 
-func FailWithDetail(ctx *gin.Context, status int, code int, message string) {
-	resultJson(ctx, status, code, message, NULL_DATA)
+func FailWithDetail(ctx *gin.Context, status int, message string) {
+	resultJson(ctx, status, status, message, NULL_DATA)
 }
