@@ -12,7 +12,7 @@ pipeline {
                 sh '''
                    echo ${WORKSPACE}
                    cd  ${WORKSPACE}
-                   go build -o /home/study
+                   go build -o /home/study/memoirs
                   '''
             }
         }
@@ -26,7 +26,7 @@ pipeline {
         }
         stage('运行项目') {
             steps {
-                sh ''' nohup /home/study/memoirs > study.log & '''
+                sh ''' nohup /home/study/memoirs > memoirs.log & '''
             }
         }
     }
