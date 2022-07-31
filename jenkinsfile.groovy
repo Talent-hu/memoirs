@@ -20,7 +20,6 @@ pipeline {
             steps {
                 sh ''' 
                     kill -9 $(netstat -antp | grep :8888 | awk '{print $7}' | awk -F'/' '{ print $1 }') 
-                    sleep 2s
                    '''
             }
         }
