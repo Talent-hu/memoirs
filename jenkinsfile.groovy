@@ -19,10 +19,9 @@ pipeline {
         stage('停止项目') {
             steps {
                 sh ''' 
-                  
-                    pid = $(netstat -antp | grep :8888 | awk '{print $7}' | awk -F'/' '{ print $1 }')
-                    echo "当前进程PID:${pid}"
-                    if [ -n "${pid}"];then
+                    pid=$(netstat -antp | grep :8888 | awk '{print $7}' | awk -F'/' '{ print $1 }')
+                    echo 当前进程:$pid
+                    if [ -n "${pid}" ] ; then
                         echo "kill -9 pid:${pid}"
                         kill -9 $pid
                     fi
@@ -31,7 +30,7 @@ pipeline {
         }
         stage('运行项目') {
             steps {
-                sh ''' nohup /home/study/memoirs > memoirs.log 2>&1 & '''
+                sh ''' BUILD_ID=dontKillMe nohup /home/study/memoirs & '''
             }
         }
     }
