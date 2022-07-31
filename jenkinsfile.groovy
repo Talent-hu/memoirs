@@ -30,7 +30,7 @@ pipeline {
         }
         stage('运行项目') {
             steps {
-                sh ''' BUILD_ID=dontKillMe nohup /home/study/memoirs & '''
+                sh ''' BUILD_ID=dontKillMe nohup /home/study/memoirs > memoirs.log 2>&1 & '''
             }
         }
     }
