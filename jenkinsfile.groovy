@@ -19,8 +19,13 @@ pipeline {
         stage('停止项目') {
             steps {
                 sh ''' 
-                    kill -9 $(netstat -antp | grep :8888 | awk '{print $7}' | awk -F'/' '{ print $1 }') 
                   
+                    pid = $(netstat -antp | grep :8888 | awk '{print $7}' | awk -F'/' '{ print $1 }')
+                    echo $pid
+                    if [ -n "$pid" ] then
+                        echo "kill -9 pid:$pid"
+                        kill -9 $pid
+                    fi
                    '''
             }
         }
