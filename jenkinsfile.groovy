@@ -32,7 +32,7 @@ pipeline {
             steps {
                 withEnv(['JENKINS_NODE_COOKIE=dontkillme']) {
                     sh '''               
-                    nohup /home/study/memoirs & 
+                    nohup /home/study/memoirs >/home/study/memoirs.log 2>&1 &
                   '''
                 }
             }
