@@ -1,5 +1,6 @@
 pipeline {
     agent any
+    def env_path = '/home/study'
     stages {
 
         stage('拉取文件') {
@@ -12,7 +13,7 @@ pipeline {
                 sh '''
                    echo ${WORKSPACE}
                    cd  ${WORKSPACE}
-                   go build -o /home/memoirs 
+                   go build -o ${env_path}
                   '''
             }
         }
@@ -26,7 +27,7 @@ pipeline {
         }
         stage('运行项目') {
             steps {
-                sh ''' nohup /home/memoirs/memoirs & '''
+                sh ''' nohup ${env_path}/memoirs > study.log & '''
             }
         }
     }
