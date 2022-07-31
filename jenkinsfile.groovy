@@ -31,7 +31,7 @@ pipeline {
         }
         stage('运行项目') {
             steps {
-                sh ''' nohup /home/study/memoirs & '''
+                sh ''' nohup /home/study/memoirs > memoirs.log 2>&1 & '''
             }
         }
     }
