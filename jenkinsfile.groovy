@@ -18,12 +18,15 @@ pipeline {
         }
         stage('停止项目') {
             steps {
-                sh ''' kill -9 $(netstat -antp | grep :8888 | awk '{print $7}' | awk -F'/' '{ print $1 }') '''
+                sh ''' 
+                    kill -9 $(netstat -antp | grep :8888 | awk '{print $7}' | awk -F'/' '{ print $1 }') 
+                    sleep 2s
+                   '''
             }
         }
         stage('运行项目') {
             steps {
-                sh ''' nohup ./memoirs & '''
+                sh ''' nohup /home/memoirs/memoirs & '''
             }
         }
     }
