@@ -30,7 +30,11 @@ pipeline {
         }
         stage('运行项目') {
             steps {
-                sh ''' BUILD_ID=dontKillMe nohup /home/study/memoirs > memoirs.log 2>&1 & '''
+                withEnv(['JENKINS_NODE_COOKIE=dontkillme']) {
+                    sh '''               
+                    nohup /home/study/memoirs & 
+                  '''
+                }
             }
         }
     }
