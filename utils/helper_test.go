@@ -18,12 +18,12 @@ func TestGenerateMD5(t *testing.T) {
 
 func TestGeneratorRSAKey(t *testing.T) {
 	privateKey, publicKey, _ := GeneratorRSAKey()
-	fmt.Println(privateKey)
-	fmt.Println(publicKey)
+	fmt.Println(string(privateKey))
+	fmt.Println(string(publicKey))
 	password := "123456"
-	encPwd, _ := RsaEncrypt([]byte(password), []byte(publicKey))
+	encPwd, _ := RsaEncrypt([]byte(password), publicKey)
 	fmt.Println(string(encPwd))
-	pwd, _ := RsaDecrypt(encPwd, []byte(privateKey))
+	pwd, _ := RsaDecrypt(encPwd, privateKey)
 	fmt.Println(string(pwd))
 
 }

@@ -2,6 +2,7 @@ package api
 
 import (
 	"context"
+	"encoding/base64"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
@@ -34,9 +35,16 @@ func (this *UserApi) Login(ctx *gin.Context) {
 	}
 	if len(loginReq.Account) > 32 {
 		// RSA 私钥解密
+		account, err := base64.StdEncoding.DecodeString(loginReq.Account)
+		password, err := base64.StdEncoding.DecodeString(loginReq.Password)
+		if err != nil {
+			global.Log.Error("解码失败！")
+			response.FailWithMessage(ctx, "解码失败")
+			return
+		}
 		privateKey := global.Redis.Get(context.Background(), "rsa_private").Val()
-		account, _ := utils.RsaDecrypt([]byte(loginReq.Account), []byte(privateKey))
-		password, err := utils.RsaDecrypt([]byte(loginReq.Password), []byte(privateKey))
+		account, _ = utils.RsaDecrypt(account, []byte(privateKey))
+		password, err = utils.RsaDecrypt(password, []byte(privateKey))
 		if err != nil {
 			response.FailWithMessage(ctx, "用户名或密码错误")
 			return
@@ -89,13 +97,15 @@ func (this *UserApi) PublicKey(ctx *gin.Context) {
 	resp := new(vo.GetRsaKeyResponse)
 	publicKey := global.Redis.Get(context.Background(), "rsa_public").Val()
 	if publicKey == "" {
-		privateKey, publicKey, err := utils.GeneratorRSAKey()
+		privKey, pubKey, err := utils.GeneratorRSAKey()
+		publicKey = string(pubKey)
+		privateKey := string(privKey)
 		if err != nil {
 			response.FailWithMessage(ctx, "生成RSA密钥对失败")
 			return
 		}
-		global.Redis.Set(context.Background(), "rsa_public", string(publicKey), time.Hour*24)
-		global.Redis.Set(context.Background(), "rsa_private", string(privateKey), time.Hour*24)
+		global.Redis.Set(context.Background(), "rsa_public", publicKey, time.Hour*24)
+		global.Redis.Set(context.Background(), "rsa_private", privateKey, time.Hour*24)
 
 	}
 	fmt.Println(publicKey)
