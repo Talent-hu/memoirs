@@ -2,10 +2,10 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
-	"memoirs/common/response"
 	"memoirs/global"
 	"memoirs/model"
 	"memoirs/model/vo"
+	"memoirs/pkg/response"
 	"memoirs/utils"
 )
 

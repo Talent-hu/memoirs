@@ -1,6 +1,8 @@
 package api
 
-import "memoirs/service"
+import (
+	"memoirs/service"
+)
 
 type ApiGroup struct {
 	UserApi

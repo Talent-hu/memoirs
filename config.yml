@@ -2,7 +2,8 @@
 system:
    name: memoirs
    Port: '8888'
-   cache-mode: local_cache  # 1.local_cache  2.redis
+   cache-mode: redis  # 1.lru  2.redis
+   cache-size: 1024
 
 
 mysql:
@@ -30,7 +31,7 @@ redis:
 # zap log
 zap:
   level: debug
-  format: json
+  format: console
   prefix: ''
   director: log
   show-line: true

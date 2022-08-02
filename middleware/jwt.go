@@ -3,10 +3,10 @@ package middleware
 import (
 	"context"
 	"github.com/gin-gonic/gin"
-	"memoirs/common/constant"
-	"memoirs/common/jwts"
-	"memoirs/common/response"
 	"memoirs/global"
+	"memoirs/pkg/constant"
+	"memoirs/pkg/jwts"
+	"memoirs/pkg/response"
 	"net/http"
 	"time"
 )

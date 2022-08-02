@@ -29,3 +29,10 @@ type RoleModel struct {
 	RoleCode string `json:"roleCode"` // 角色编码
 	RoleName string `json:"roleName"` // 角色名称
 }
+
+type UserRegister struct {
+	Account  string `json:"account"`  // 账号
+	Password string `json:"password"` // 密码
+	NickName string `json:"nickName"` // 昵称
+	Mode     int    `json:"mode"`     // 注册模式 1：账号；2电话；3邮箱
+}

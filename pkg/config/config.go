@@ -14,6 +14,7 @@ type System struct {
 	Name      string `mapstructure:"name" json:"name" yaml:"name"`
 	Port      string `mapstructure:"port" json:"port" yaml:"port"`
 	CacheMode string `mapstructure:"cache-mode" json:"cache-mode" yaml:"cache-mode"`
+	CacheSize int    `mapstructure:"cache-size" json:"cache-size" yaml:"cache-size"`
 }
 
 type Mysql struct {
@@ -57,7 +58,6 @@ type Zap struct {
 	StacktraceKey string `mapstructure:"stacktrace-key" json:"stacktrace-key" yaml:"stacktrace-key"`
 	LogInConsole  bool   `mapstructure:"log-in-console" json:"log-in-console" yaml:"log-in-console"`
 }
-
 
 type JWT struct {
 	SignKey    string `mapstructure:"sign-key" json:"sign-key" yaml:"sign-key"`

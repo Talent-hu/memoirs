@@ -1,10 +1,10 @@
 package service
 
 import (
-	"memoirs/common/constant"
 	"memoirs/global"
 	"memoirs/model"
 	"memoirs/model/vo"
+	"memoirs/pkg/constant"
 	"memoirs/utils"
 )
 

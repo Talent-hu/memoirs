@@ -57,7 +57,7 @@ func (this *JWT) ParseToken(tokenStr string) (*UserStdClaims, error) {
 		return nil, errors.New("token is empty")
 	}
 	token, err := jwt.ParseWithClaims(tokenStr, &UserStdClaims{}, func(token *jwt.Token) (interface{}, error) {
-		return this.SignKey,nil
+		return this.SignKey, nil
 	})
 	if err != nil {
 		if ve, ok := err.(*jwt.ValidationError); ok {
@@ -79,4 +79,3 @@ func (this *JWT) ParseToken(tokenStr string) (*UserStdClaims, error) {
 	}
 	return nil, TokenInvalid
 }
-

@@ -5,6 +5,7 @@ import (
 	_ "memoirs/config"
 	_ "memoirs/docs"
 	"memoirs/global"
+	"memoirs/pkg/cache"
 	"memoirs/router"
 )
 
@@ -12,6 +13,7 @@ import (
 // @version 1.0.0
 // @description gin开发的后台管理系统
 func main() {
+	cache.InitCache()
 	addr := fmt.Sprintf(":%s", global.Config.System.Port)
 	server := router.InitRouter()
 	_ = server.Run(addr)

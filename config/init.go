@@ -12,7 +12,9 @@ func init() {
 	global.Log = InitZap()
 	zap.ReplaceGlobals(global.Log)
 	// 加载redis
-	global.Redis = InitRedis()
+	if global.Config.System.CacheMode == "redis" {
+		global.Redis = InitRedis()
+	}
 	// 加载数据库连接
 	global.DB = Gorm()
 }

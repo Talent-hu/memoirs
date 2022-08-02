@@ -18,7 +18,6 @@ func Gorm() *gorm.DB {
 
 func gormMysql() *gorm.DB {
 	m := global.Config.Mysql
-	fmt.Println(m.Dns())
 	mysqlConfig := mysql.Config{
 		DSN:                       m.Dns(),
 		DefaultStringSize:         191,
@@ -42,7 +41,7 @@ func RegisterTable(db *gorm.DB) {
 		&model.Role{},
 		&model.RoleMenu{},
 		&model.Menu{},
-		)
+	)
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(0)
