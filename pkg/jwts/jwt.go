@@ -12,6 +12,9 @@ type JWT struct {
 }
 
 var (
+	SignKey          = "memoirs-key"
+	ExpireTime       = 604800
+	BufferTime       = 86400
 	TokenExpired     = errors.New("Token is expired")
 	TokenNotValidYet = errors.New("Token not active yet")
 	TokenMalformed   = errors.New("That's not even a token")
@@ -20,20 +23,19 @@ var (
 
 func NewJWT() *JWT {
 	return &JWT{
-		SignKey: []byte(global.Config.SignKey),
+		SignKey: []byte(SignKey),
 	}
 }
 
 func (this *JWT) CreateClaims(uClaim *UserClaims) UserStdClaims {
 	stdClaims := jwt.StandardClaims{
-		NotBefore: time.Now().Unix() - 1000,                     // 签名生效时间
-		ExpiresAt: time.Now().Unix() + global.Config.ExpireTime, // 签名过期时间
+		NotBefore: time.Now().Unix() - 1000,              // 签名生效时间
+		ExpiresAt: time.Now().Unix() + int64(ExpireTime), // 签名过期时间
 		IssuedAt:  time.Now().Unix(),
-		Issuer:    global.Config.AppIss, // 签名的发行者
 	}
 	return UserStdClaims{
 		StandardClaims: stdClaims,
-		BufferTime:     global.Config.BufferTime,
+		BufferTime:     int64(BufferTime),
 		UserInfo:       uClaim,
 	}
 }

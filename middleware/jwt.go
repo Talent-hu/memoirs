@@ -40,12 +40,12 @@ func GinJwt() gin.HandlerFunc {
 			return
 		}
 		if claims.ExpiresAt-time.Now().Unix() < claims.BufferTime {
-			claims.ExpiresAt = time.Now().Unix() + global.Config.ExpireTime
+			claims.ExpiresAt = time.Now().Unix() + int64(jwts.ExpireTime)
 			newToken, _ := jwt.CreateTokenByOldToken(token, *claims)
 			ctx.Header("new-Token", newToken)
 
 			// redis记录token
-			global.Redis.Set(context.Background(), claims.UserInfo.Identity, newToken, time.Second*time.Duration(global.Config.ExpireTime))
+			global.Redis.Set(context.Background(), claims.UserInfo.Identity, newToken, time.Second*time.Duration(int64(jwts.ExpireTime)))
 		}
 		ctx.Set("claims", claims)
 		ctx.Next()

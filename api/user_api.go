@@ -81,7 +81,7 @@ func (this *UserApi) TokenNext(ctx *gin.Context, user *model.User) {
 		return
 	}
 	// 将token存入redis缓存中
-	global.Redis.Set(context.Background(), user.Identity, token, time.Second*time.Duration(global.Config.ExpireTime))
+	global.Redis.Set(context.Background(), user.Identity, token, time.Second*time.Duration(int64(jwts.ExpireTime)))
 	resp := new(vo.LoginResponse)
 	resp.Token = token
 	response.OkWithDetail(ctx, "登录成功", resp)

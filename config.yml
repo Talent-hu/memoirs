@@ -1,10 +1,8 @@
-
-system:
+netConf:
    name: memoirs
    Port: '8888'
    cache-mode: redis  # 1.lru  2.redis
    cache-size: 1024
-
 
 mysql:
   username: htc
@@ -18,7 +16,6 @@ mysql:
   log-mode: debug
   log-zap: true
 
-
 # redis 配置
 redis:
   addr: 101.132.251.60:6379
@@ -28,16 +25,15 @@ redis:
   max-active: 0 # 数据库最大链接数，0表示不控制最大链接数
   idle-timeout: 120  //最大空闲时间
 
-# zap log
-zap:
+# logger
+log:
+  logFileDir: logs
+  appName: app
+  platform: local
+  maxSize: 100
+  maxBackups: 60
+  maxAge: 30
   level: debug
-  format: console
-  prefix: ''
-  director: log
-  show-line: true
-  encode-level: LowercaseLevelEncoder
-  stacktrace-key: 'stacktrace'
-  log-in-console: true
 
 jwt:
   sign-key: memoirs-key

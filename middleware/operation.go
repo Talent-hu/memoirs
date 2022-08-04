@@ -20,7 +20,9 @@ func RecordOptions() gin.HandlerFunc {
 			if err != nil {
 				global.Log.Error("read body from request error:", zap.Error(err))
 			} else {
-				global.Log.Info("read body from request:", zap.String("requestBody", string(body)))
+				requestBody := fmt.Sprintf("%s\n", strings.ReplaceAll(string(body), "\\\"", "\""))
+				fmt.Printf("requestBody:%s\n", requestBody)
+				//global.Log.Info("read body from request:", zap.String("requestBody", string(body)))
 				ctx.Request.Body = ioutil.NopCloser(bytes.NewBuffer(body))
 			}
 		}
@@ -28,7 +30,7 @@ func RecordOptions() gin.HandlerFunc {
 		ctx.Writer = blw
 		ctx.Next()
 		jsonStr := fmt.Sprintf("%s\n", strings.ReplaceAll(blw.body.String(), "\\\"", "\""))
-		fmt.Println("响应数据为：", jsonStr)
+		fmt.Printf("responseBody:%s\n", jsonStr)
 		/*global.Log.Info("read body from response:",
 		zap.String("url", ctx.Request.URL.String()),
 		zap.String("status", strconv.Itoa(ctx.Writer.Status())),

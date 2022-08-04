@@ -1,20 +1,46 @@
 package config
 
 import (
-	"go.uber.org/zap"
 	"memoirs/global"
+	"memoirs/pkg/conf"
+	"memoirs/pkg/database/mysql"
+	"memoirs/pkg/database/redis"
+	"memoirs/pkg/logger"
 )
 
-func init() {
-	// 加载配置文件
-	InitLoadConfig()
-	// 加载zap日志配置
-	global.Log = InitZap()
-	zap.ReplaceGlobals(global.Log)
-	// 加载redis
-	if global.Config.System.CacheMode == "redis" {
-		global.Redis = InitRedis()
+func NewApp() error {
+	viper, err := conf.NewViper()
+	if err != nil {
+		return err
 	}
-	// 加载数据库连接
-	global.DB = Gorm()
+	appConfig, err := conf.NewAppConfig(viper)
+	if err != nil {
+		return err
+	}
+	global.AppConfig = appConfig
+	options, err := conf.NewLoggerCfg(viper)
+	if err != nil {
+		return err
+	}
+	log, err := logger.NewLogger(options)
+	if err != nil {
+		return err
+	}
+	global.Log = log
+	mysqlConfig, err := conf.NewMysqlCfg(viper)
+	if err != nil {
+		return err
+	}
+	mysqlClient := mysql.NewMysql(mysqlConfig)
+	redisConfig, err := conf.NewRedisCfg(viper)
+	if err != nil {
+		return err
+	}
+	global.DB = mysqlClient
+	redisClient, err := redis.NewRedis(redisConfig)
+	if err != nil {
+		return err
+	}
+	global.Redis = redisClient
+	return nil
 }

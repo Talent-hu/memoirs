@@ -11,15 +11,19 @@ type Client struct {
 }
 
 type Config struct {
-	PoolSize     int           `yaml:"poolSize"`
-	Addr         []string      `yaml:"addr"`
-	Pwd          string        `yaml:"pwd"`
-	DialTimeout  time.Duration `yaml:"dialTimeout"`
-	ReadTimeout  time.Duration `yaml:"readTimeout"`
-	WriteTimeout time.Duration `yaml:"writeTimeout"`
+	Addr         []string      `mapstructure:"addr" json:"addr" yaml:"addr"`
+	Password     string        `mapstructure:"password" json:"password" yaml:"password"`
+	DB           int           `mapstructure:"db" json:"db" yaml:"db"`
+	MaxIdle      int           `mapstructure:"max-idle" json:"max-idle" yaml:"max-idle"`
+	MaxActive    int           `mapstructure:"max-active" json:"max-active" yaml:"max-active"`
+	MaxTimeout   int           `mapstructure:"max-timeout" json:"max-timeout" yaml:"max-timeout"`
+	PoolSize     int           `mapstructure:"pool-size" json:"pool-size" yaml:"pool-size"`
+	DialTimeout  time.Duration `mapstructure:"dial-timeout" json:"dial-timeout" yaml:"dial-timeout"`
+	ReadTimeout  time.Duration `mapstructure:"read-timeout" json:"read-timeout" yaml:"read-timeout"`
+	WriteTimeout time.Duration `mapstructure:"write-timeout" json:"write-timeout" yaml:"write-timeout"`
 }
 
-func NewRedis(c Config) (client *Client, err error) {
+func NewRedis(c *Config) (client *Client, err error) {
 	var redisCli redis.Cmdable
 	if len(c.Addr) > 1 {
 		redisCli = redis.NewClusterClient(
@@ -29,7 +33,7 @@ func NewRedis(c Config) (client *Client, err error) {
 				DialTimeout:  c.DialTimeout,
 				ReadTimeout:  c.ReadTimeout,
 				WriteTimeout: c.WriteTimeout,
-				Password:     c.Pwd,
+				Password:     c.Password,
 			})
 	} else {
 		redisCli = redis.NewClient(&redis.Options{
@@ -37,9 +41,9 @@ func NewRedis(c Config) (client *Client, err error) {
 			DialTimeout:  c.DialTimeout,
 			ReadTimeout:  c.ReadTimeout,
 			WriteTimeout: c.WriteTimeout,
-			Password:     c.Pwd,
+			Password:     c.Password,
 			PoolSize:     c.PoolSize,
-			DB:           0,
+			DB:           c.DB,
 		})
 	}
 	err = redisCli.Ping(context.Background()).Err()
