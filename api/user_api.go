@@ -1,20 +1,11 @@
 package api
 
 import (
-	"context"
-	"encoding/base64"
-	"fmt"
 	"github.com/gin-gonic/gin"
-	"go.uber.org/zap"
-	"memoirs/global"
-	"memoirs/model"
 	"memoirs/model/vo"
-	"memoirs/pkg/jwts"
 	"memoirs/pkg/response"
 	"memoirs/utils"
 	"memoirs/validate"
-	"strings"
-	"time"
 )
 
 type UserApi struct{}
@@ -33,58 +24,12 @@ func (this *UserApi) Login(ctx *gin.Context) {
 		response.FailWithMessage(ctx, err.Error())
 		return
 	}
-	if len(loginReq.Account) > 32 {
-		// RSA 私钥解密
-		account, err := base64.StdEncoding.DecodeString(loginReq.Account)
-		password, err := base64.StdEncoding.DecodeString(loginReq.Password)
-		if err != nil {
-			global.Log.Error("解码失败！")
-			response.FailWithMessage(ctx, "解码失败")
-			return
-		}
-		privateKey := global.Redis.Get(context.Background(), "rsa_private").Val()
-		account, _ = utils.RsaDecrypt(account, []byte(privateKey))
-		password, err = utils.RsaDecrypt(password, []byte(privateKey))
-		if err != nil {
-			response.FailWithMessage(ctx, "用户名或密码错误")
-			return
-		}
-		loginReq.Account = string(account)
-		loginReq.Password = string(password)
-	}
-	encPwd := utils.GenerateMD5(loginReq.Password)
-	user, err := userService.Login(loginReq.Account)
+	resp, err := authService.Login(loginReq)
 	if err != nil {
-		response.FailWithMessage(ctx, "用户名或密码错误")
-		return
+		response.FailWithMessage(ctx, err.Error())
+	} else {
+		response.OkWithData(ctx, resp)
 	}
-	if user.Password != encPwd {
-		response.FailWithMessage(ctx, "用户名或密码错误")
-		return
-	}
-	this.TokenNext(ctx, user)
-}
-
-func (this *UserApi) TokenNext(ctx *gin.Context, user *model.User) {
-	jwt := jwts.NewJWT()
-	usrClaims := &jwts.UserClaims{
-		UserId:   user.ID,
-		UserName: user.Username,
-		NickName: user.NickName,
-		Identity: user.Identity,
-	}
-	claims := jwt.CreateClaims(usrClaims)
-	token, err := jwt.CreateToken(claims)
-	if err != nil {
-		global.Log.Error("生成token失败！", zap.Error(err))
-		response.FailWithMessage(ctx, "获取token失败！")
-		return
-	}
-	// 将token存入redis缓存中
-	global.Redis.Set(context.Background(), user.Identity, token, time.Second*time.Duration(int64(jwts.ExpireTime)))
-	resp := new(vo.LoginResponse)
-	resp.Token = token
-	response.OkWithDetail(ctx, "登录成功", resp)
 }
 
 // @Tag UserApi
@@ -94,24 +39,10 @@ func (this *UserApi) TokenNext(ctx *gin.Context, user *model.User) {
 // @Success 200 {object} response.Response{data=vo.GetRsaKeyResponse,message=string} "返回用户token"
 // @Router /user/publicKey [get]
 func (this *UserApi) PublicKey(ctx *gin.Context) {
-	resp := new(vo.GetRsaKeyResponse)
-	publicKey := global.Redis.Get(context.Background(), "rsa_public").Val()
-	if publicKey == "" {
-		privKey, pubKey, err := utils.GeneratorRSAKey()
-		publicKey = string(pubKey)
-		privateKey := string(privKey)
-		if err != nil {
-			response.FailWithMessage(ctx, "生成RSA密钥对失败")
-			return
-		}
-		global.Redis.Set(context.Background(), "rsa_public", publicKey, time.Hour*24)
-		global.Redis.Set(context.Background(), "rsa_private", privateKey, time.Hour*24)
-
+	resp, err := authService.RsaPublicSecret()
+	if err != nil {
+		response.FailWithMessage(ctx, err.Error())
 	}
-	fmt.Println(publicKey)
-	split := strings.Split(publicKey, "\n")
-	publicKey = strings.Join(split[1:len(split)-2], "")
-	resp.PublicKey = publicKey
 	response.OkWithData(ctx, resp)
 }
 
@@ -121,47 +52,21 @@ func (this *UserApi) PublicKey(ctx *gin.Context) {
 // @Param Authorization header string false "Bearer 用户令牌"
 // @Success 200 {object} response.Response{data=vo.GetUserInfoResponse,message=string} "返回用户token"
 // @Router /user/info [get]
-func (this *UserApi) GetUserInfo(ctx *gin.Context) {
+func (this *UserApi) QueryUserInfo(ctx *gin.Context) {
 	userId := utils.GetUserID(ctx)
-	userInfo, err := userService.GetUserInfo(userId)
+	resp, err := userService.QueryUserInfo(userId)
 	if err != nil {
-		response.FailWithMessage(ctx, "系统错误，未查询到对应数据。")
-		return
-	}
-	if len(userInfo.Roles) <= 0 {
-		response.FailWithMessage(ctx, "用户还没有赋予权限，请联系管理员授权")
-		return
-	}
-	resp := new(vo.UserInfoResponse)
-	_ = utils.CopyProperties(userInfo, resp)
-	for _, role := range userInfo.Roles {
-		roleModel := new(vo.RoleModel)
-		roleModel.RoleName = role.RoleName
-		roleModel.RoleCode = role.RoleCode
-		resp.Roles = append(resp.Roles, *roleModel)
+		response.FailWithMessage(ctx, err.Error())
 	}
 	response.OkWithData(ctx, resp)
 }
 
 func (this *UserApi) QueryUserList(ctx *gin.Context) {
-	var pageInfo vo.BasePage
-	_ = ctx.ShouldBindJSON(&pageInfo)
-	list, err := userService.QueryUserList(pageInfo.PageSize, pageInfo.Offset())
+	var pageQuery vo.ListQuery
+	_ = ctx.ShouldBindJSON(&pageQuery)
+	resp, err := userService.QueryUserList(pageQuery)
 	if err != nil {
-		response.FailWithMessage(ctx, "系统错误，未查询到对应数据。")
-		return
+		response.FailWithMessage(ctx, err.Error())
 	}
-	var userInfoList []vo.UserInfoResponse
-	for _, user := range list {
-		var userInfo vo.UserInfoResponse
-		_ = utils.CopyProperties(user, &userInfo)
-		for _, role := range user.Roles {
-			roleModel := new(vo.RoleModel)
-			roleModel.RoleName = role.RoleName
-			roleModel.RoleCode = role.RoleCode
-			userInfo.Roles = append(userInfo.Roles, *roleModel)
-		}
-		userInfoList = append(userInfoList, userInfo)
-	}
-	response.OkWithData(ctx, userInfoList)
+	response.OkWithData(ctx, resp)
 }

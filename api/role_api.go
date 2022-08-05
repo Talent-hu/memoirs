@@ -2,82 +2,80 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
-	"memoirs/global"
-	"memoirs/model"
 	"memoirs/model/vo"
 	"memoirs/pkg/response"
 	"memoirs/utils"
+	"memoirs/validate"
 )
 
 type RoleApi struct{}
 
+// 分页查询所有的角色列表
 func (this *RoleApi) QueryRoleAllList(ctx *gin.Context) {
-	list, err := roleService.QueryList()
-	if err != nil {
-		response.FailWithMessage(ctx, "查询角色列表失败")
+	var queryPage vo.ListQuery
+	_ = ctx.ShouldBindJSON(&queryPage)
+	if err := validate.Verify(queryPage, validate.QueryPageListVerify); err != nil {
+		response.FailWithMessage(ctx, err.Error())
 		return
 	}
-	var roleInfoList []vo.RoleInfo
-	for _, role := range list {
-		var roleInfo vo.RoleInfo
-		_ = utils.CopyProperties(&role, &roleInfo)
-		roleInfo.RoleId = role.ID
-		roleInfoList = append(roleInfoList, roleInfo)
-	}
-	response.OkWithData(ctx, roleInfoList)
+	resp := roleService.QueryAll(queryPage)
+	response.OkWithData(ctx, resp)
 }
 
+// 查询用户拥有的角色信息
 func (this *RoleApi) QueryUserRoleList(ctx *gin.Context) {
 	userId := utils.GetUserID(ctx)
-	list, err := roleService.QueryUserRoleList(userId)
+	resp, err := roleService.QueryUserRole(userId)
 	if err != nil {
-		response.FailWithMessage(ctx, "查询角色列表失败")
+		response.FailWithMessage(ctx, err.Error())
 		return
 	}
-	var roleInfoList []vo.RoleInfo
-	for _, role := range list {
-		var roleInfo vo.RoleInfo
-		_ = utils.CopyProperties(&role, &roleInfo)
-		roleInfo.RoleId = role.ID
-		roleInfoList = append(roleInfoList, roleInfo)
-	}
-	response.OkWithData(ctx, roleInfoList)
+	response.OkWithData(ctx, resp)
 }
 
+// 新增角色
 func (this *RoleApi) AddRole(ctx *gin.Context) {
 	var role vo.RoleRequest
 	_ = ctx.ShouldBindJSON(&role)
-	var roled model.Role
-	_ = utils.CopyProperties(&role, &roled)
-	err := roleService.AddRole(roled)
+	if err := validate.Verify(role, validate.AddRoleVerify); err != nil {
+		response.FailWithMessage(ctx, err.Error())
+		return
+	}
+	err := roleService.AddRole(role)
 	if err != nil {
-		response.FailWithMessage(ctx, "新增角色失败")
+		response.FailWithMessage(ctx, err.Error())
 		return
 	}
 	response.Ok(ctx)
 }
 
+// 新增角色与菜单关系
 func (this *RoleApi) AddRoleAndMenu(ctx *gin.Context) {
 	var relation vo.RoleMenuRelation
 	_ = ctx.ShouldBindJSON(&relation)
-	err := roleService.AddRoleAndMenu(relation.RoleId, relation.MenuIds)
+	if err := validate.Verify(relation, validate.RoleAndMenuVerify); err != nil {
+		response.FailWithMessage(ctx, err.Error())
+		return
+	}
+	err := roleService.AddRoleAndMenu(relation)
 	if err != nil {
-		global.Log.Error(err.Error())
-		response.FailWithMessage(ctx, "新增权限失败")
+		response.FailWithMessage(ctx, err.Error())
 		return
 	}
 	response.Ok(ctx)
 }
 
+// 更新角色信息
 func (this *RoleApi) UpdateRole(ctx *gin.Context) {
 	var roleReq vo.RoleInfo
 	_ = ctx.ShouldBindJSON(&roleReq)
-	var role model.Role
-	_ = utils.CopyProperties(&roleReq, &role)
-	role.ID = roleReq.RoleId
-	err := roleService.UpdateRole(role)
+	if err := validate.Verify(roleReq, validate.UpdateRoleVerify); err != nil {
+		response.FailWithMessage(ctx, err.Error())
+		return
+	}
+	err := roleService.UpdateRole(roleReq)
 	if err != nil {
-		response.FailWithMessage(ctx, "更新失败！")
+		response.FailWithMessage(ctx, err.Error())
 		return
 	}
 	response.Ok(ctx)
@@ -87,9 +85,29 @@ func (this *RoleApi) UpdateRole(ctx *gin.Context) {
 func (this *RoleApi) DeleteRole(ctx *gin.Context) {
 	var roleReq vo.DeletedRole
 	_ = ctx.ShouldBindJSON(&roleReq)
+	if err := validate.Verify(roleReq, validate.DeleteRoleVerify); err != nil {
+		response.FailWithMessage(ctx, err.Error())
+		return
+	}
 	err := roleService.DeleteRole(roleReq.RoleId)
 	if err != nil {
-		response.FailWithMessage(ctx, "删除角色失败")
+		response.FailWithMessage(ctx, err.Error())
+		return
+	}
+	response.Ok(ctx)
+}
+
+// 删除角色与菜单的关联关系
+func (this *RoleApi) DelMenuAndRoleRel(ctx *gin.Context) {
+	var relation vo.RoleMenuRelation
+	_ = ctx.ShouldBindJSON(&relation)
+	if err := validate.Verify(relation, validate.RoleAndMenuVerify); err != nil {
+		response.FailWithMessage(ctx, err.Error())
+		return
+	}
+	err := roleService.DeleteRoleAndMenu(relation)
+	if err != nil {
+		response.FailWithMessage(ctx, err.Error())
 		return
 	}
 	response.Ok(ctx)

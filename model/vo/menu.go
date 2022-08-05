@@ -30,6 +30,11 @@ type MenuTree struct {
 	Children  []MenuTree `json:"children"`
 }
 
-type RemoveMenu struct {
+type DeleteMenu struct {
 	MenuIds []uint `json:"menuIds"` // 菜单ID列表
+}
+
+type QuerySetting struct {
+	FontType string `json:"fontType"` // 字体类型
+	FontSize uint   `json:"fontSize"` // 字体大小
 }

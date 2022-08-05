@@ -7,15 +7,15 @@ type LoginRequest struct {
 	Password string `json:"password"` // 登录密码
 }
 
-type LoginResponse struct {
+type LoginReply struct {
 	Token string `json:"token"`
 }
 
-type GetRsaKeyResponse struct {
+type RsaKeyReply struct {
 	PublicKey string `json:"publicKey"` // 公钥
 }
 
-type UserInfoResponse struct {
+type UserInfoReply struct {
 	Identity string      `json:"identity"` // 用户唯一标识
 	NickName string      `json:"nickName"` // 昵称
 	Gender   string      `json:"gender"`   // 性别

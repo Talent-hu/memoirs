@@ -2,6 +2,7 @@ package response
 
 import (
 	"github.com/gin-gonic/gin"
+	"memoirs/global"
 	"net/http"
 )
 
@@ -40,6 +41,7 @@ func OkWithDetail(ctx *gin.Context, message string, data any) {
 }
 
 func FailWithMessage(ctx *gin.Context, message string) {
+	global.Log.Error(message)
 	resultJson(ctx, http.StatusInternalServerError, SERVER_ERR, message, nil)
 }
 

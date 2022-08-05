@@ -15,9 +15,9 @@ func (this *UserRouter) InitUserRouter(Router *gin.RouterGroup) {
 	{
 		userRouter.POST("/login", userApi.Login)
 		userRouter.GET("/publicKey", userApi.PublicKey)
-		userRouter.GET("/listAll", userApi.QueryUserList)
 	}
 	{
-		privateRouter.GET("/info", userApi.GetUserInfo)
+		privateRouter.GET("/info", userApi.QueryUserInfo)
+		privateRouter.GET("/listAll", userApi.QueryUserList)
 	}
 }

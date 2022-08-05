@@ -1,11 +1,11 @@
 package vo
 
-type BasePage struct {
+type ListQuery struct {
 	PageNum  int `json:"pageNum"`
 	PageSize int `json:"pageSize"`
 }
 
-func (this BasePage) Offset() int {
+func (this ListQuery) Offset() int {
 	if this.PageNum == 0 {
 		this.PageNum = 1
 		this.PageSize = 10
@@ -14,4 +14,9 @@ func (this BasePage) Offset() int {
 		return (this.PageNum - 1) * this.PageSize
 	}
 	return this.PageSize
+}
+
+type PageQueryReply struct {
+	Total int64       `json:"total"`
+	List  interface{} `json:"list"`
 }
