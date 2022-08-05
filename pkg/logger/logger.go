@@ -146,17 +146,12 @@ func (l *Logger) cores() zap.Option {
 	if l.GetLevel() == zapcore.DebugLevel {
 		cores = append(cores, []zapcore.Core{
 			zapcore.NewCore(consoleEncoder, debugConsoleWS, priority),
+			zapcore.NewCore(fileEncoder, outWrite, priority),
 		}...)
 	} else {
-		if l.Opts.Platform == "k8s" {
-			cores = append(cores, []zapcore.Core{
-				zapcore.NewCore(fileEncoder, debugConsoleWS, priority),
-			}...)
-		} else {
-			cores = append(cores, []zapcore.Core{
-				zapcore.NewCore(fileEncoder, outWrite, priority),
-			}...)
-		}
+		cores = append(cores, []zapcore.Core{
+			zapcore.NewCore(fileEncoder, outWrite, priority),
+		}...)
 	}
 	return zap.WrapCore(func(c zapcore.Core) zapcore.Core {
 		return zapcore.NewTee(cores...)
