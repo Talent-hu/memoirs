@@ -5,7 +5,6 @@ import (
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 	"memoirs/middleware"
-	"memoirs/router/module"
 )
 
 func InitRouter() *gin.Engine {
@@ -17,10 +16,13 @@ func InitRouter() *gin.Engine {
 		middleware.RecordOptions())
 	publicGroup := router.Group("")
 	{
-		module.RouterGroupApp.UserRouter.InitUserRouter(publicGroup)
-		module.RouterGroupApp.MenuRouter.InitMenuRouter(publicGroup)
-		module.RouterGroupApp.RoleRouter.InitRoleRouter(publicGroup)
-		module.RouterGroupApp.SystemRouter.InitSystemRouter(publicGroup)
+		RouterGroupApp.UserRouter.InitUserRouter(publicGroup)
+		RouterGroupApp.MenuRouter.InitMenuRouter(publicGroup)
+		RouterGroupApp.RoleRouter.InitRoleRouter(publicGroup)
+		RouterGroupApp.SystemRouter.InitSystemRouter(publicGroup)
+	}
+	{
+		RouterGroupApp.SubjectRouter.InitSubjectRouter(publicGroup)
 	}
 	url := ginSwagger.URL("http://127.0.0.1:8888/swagger/doc.json")
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))

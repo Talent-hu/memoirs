@@ -1,6 +1,9 @@
 package service
 
-import "memoirs/service/auth"
+import (
+	"memoirs/service/auth"
+	"memoirs/service/bank"
+)
 
 type ServiceGroup struct {
 	auth.AuthService
@@ -8,6 +11,7 @@ type ServiceGroup struct {
 	auth.RoleService
 	auth.MenuService
 	auth.SystemService
+	bank.SubjectService
 }
 
 var ServiceGroupApp = new(ServiceGroup)

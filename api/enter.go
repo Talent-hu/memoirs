@@ -1,22 +1,16 @@
 package api
 
 import (
-	"memoirs/service"
+	"memoirs/api/auth"
+	"memoirs/api/bank"
 )
 
 type ApiGroup struct {
-	UserApi
-	RoleApi
-	MenuApi
-	SystemApi
+	auth.UserApi
+	auth.RoleApi
+	auth.MenuApi
+	auth.SystemApi
+	bank.SubjectApi
 }
 
 var ApiGroupApp = new(ApiGroup)
-
-var (
-	authService   = service.ServiceGroupApp.AuthService
-	userService   = service.ServiceGroupApp.UserService
-	roleService   = service.ServiceGroupApp.RoleService
-	menuService   = service.ServiceGroupApp.MenuService
-	systemService = service.ServiceGroupApp.SystemService
-)
