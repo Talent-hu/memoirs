@@ -1,7 +1,6 @@
 package auth
 
 import (
-	"memoirs/global"
 	"memoirs/model/auth"
 	"memoirs/model/vo"
 	"memoirs/utils"
@@ -35,5 +34,6 @@ func (srv *SystemService) UpdateDict(dict vo.Dict) error {
 }
 
 func (srv *SystemService) DeleteDict(dictId uint) error {
-
+	err := dictMapper.Delete(dictId)
+	return err
 }
