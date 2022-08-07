@@ -1,6 +1,8 @@
 package auth
 
 import (
+	"errors"
+	"gorm.io/gorm"
 	"memoirs/global"
 	"memoirs/model/auth"
 	"memoirs/model/vo"
@@ -27,8 +29,11 @@ func (repo *DictItemRepository) QueryAll(dict auth.SysDictItem, page vo.ListQuer
 	return dictItemList, total, err
 }
 
-func (repo *DictItemRepository) Insert(dict auth.SysDictItem) error {
-	err := global.DB.Create(&dict).Error
+func (repo *DictItemRepository) Insert(dict auth.SysDictItem) (err error) {
+	if errors.Is(global.DB.Where("name=? or value=?", dict.Name, dict.Value).First(&dict).Error, gorm.ErrRecordNotFound) {
+		return errors.New("数据已存在，请不要重复录入")
+	}
+	err = global.DB.Create(&dict).Error
 	return err
 }
 
