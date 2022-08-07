@@ -3,9 +3,11 @@ package auth
 import (
 	"github.com/gin-gonic/gin"
 	"memoirs/model/vo"
+	"memoirs/pkg/constant"
 	"memoirs/pkg/response"
 	"memoirs/utils"
 	"memoirs/validate"
+	"strconv"
 )
 
 type MenuApi struct{}
@@ -18,7 +20,15 @@ type MenuApi struct{}
 // @Router /menu/list [post]
 func (this *MenuApi) QueryMenuList(ctx *gin.Context) {
 	userId := utils.GetUserID(ctx)
-	resp, err := menuService.QueryUserMenu(userId)
+	menuId := ctx.Request.URL.Query().Get("menuId")
+	var parentId uint
+	if menuId == "" {
+		parentId = constant.SUPER_PARENT_ID
+	} else {
+		id, _ := strconv.Atoi(menuId)
+		parentId = uint(id)
+	}
+	resp, err := menuService.QueryUserMenu(userId, parentId)
 	if err != nil {
 		response.FailWithMessage(ctx, err.Error())
 		return

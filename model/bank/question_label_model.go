@@ -1,7 +1,9 @@
-package model
+package bank
+
+import "memoirs/model"
 
 type QuestionLabel struct {
-	BaseModel
+	model.BaseModel
 	SubjectId uint   `gorm:"unique;comment:学科ID" json:"subjectId"`
 	Label     string `gorm:"varchar(64);unique;comment:标签" json:"label"`
 }

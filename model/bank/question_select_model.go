@@ -1,7 +1,9 @@
-package model
+package bank
+
+import "memoirs/model"
 
 type QuestionSelect struct {
-	BaseQuestionModel
+	model.BaseQuestionModel
 	OptionA string `gorm:"varchar(255);comment:选择A" json:"optionA"`
 	OptionB string `gorm:"varchar(255);comment:选择B" json:"optionB"`
 	OptionC string `gorm:"varchar(255);comment:选择C" json:"optionC"`

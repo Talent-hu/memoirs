@@ -2,23 +2,23 @@ package auth
 
 import (
 	"memoirs/global"
-	"memoirs/model"
+	"memoirs/model/auth"
 	"memoirs/pkg/constant"
 )
 
 type MenuRepoInterface interface {
-	AddMenu(menu model.Menu) error
-	QueryMenuInfo(userId uint) ([]model.Menu, error)
-	DeleteMenu(menuIds []uint) (model.Menu, error)
+	AddMenu(menu auth.Menu) error
+	QueryMenuInfo(userId uint) ([]auth.Menu, error)
+	DeleteMenu(menuIds []uint) (auth.Menu, error)
 }
 
 type MenuRepository struct{}
 
-func (this *MenuRepository) AddMenu(menu model.Menu) error {
+func (this *MenuRepository) AddMenu(menu auth.Menu) error {
 	db := global.DB.Begin()
 	err := db.Create(&menu).Error
 	// 给超级管理员赋予权限
-	var roleMenu model.RoleMenu
+	var roleMenu auth.RoleMenu
 	roleMenu.MenuId = menu.ID
 	roleMenu.RoleId = constant.ROOT_ROLE_ID
 	err = db.Create(&roleMenu).Error
@@ -30,8 +30,8 @@ func (this *MenuRepository) AddMenu(menu model.Menu) error {
 	return err
 }
 
-func (this *MenuRepository) QueryMenuInfo(userId uint) ([]model.Menu, error) {
-	var menuList []model.Menu
+func (this *MenuRepository) QueryMenuInfo(userId uint) ([]auth.Menu, error) {
+	var menuList []auth.Menu
 	err := global.DB.Table("user_role").
 		Joins("left join role_menu on role_menu.role_id = user_role.role_id").
 		Joins("left join menu on menu.id = role_menu.menu_id").
@@ -40,8 +40,8 @@ func (this *MenuRepository) QueryMenuInfo(userId uint) ([]model.Menu, error) {
 	return menuList, err
 }
 
-func (this *MenuRepository) QueryFirstMenuInfo(userId, superMenuId uint) ([]model.Menu, error) {
-	var menuList []model.Menu
+func (this *MenuRepository) QueryFirstMenuInfo(userId, superMenuId uint) ([]auth.Menu, error) {
+	var menuList []auth.Menu
 	err := global.DB.Table("user_role").
 		Joins("left join role_menu on role_menu.role_id = user_role.role_id").
 		Joins("left join menu on menu.id = role_menu.menu_id").
@@ -50,15 +50,8 @@ func (this *MenuRepository) QueryFirstMenuInfo(userId, superMenuId uint) ([]mode
 	return menuList, err
 }
 
-func (this *MenuRepository) DeleteMenu(menuIds []uint) (model.Menu, error) {
-	var menus model.Menu
+func (this *MenuRepository) DeleteMenu(menuIds []uint) (auth.Menu, error) {
+	var menus auth.Menu
 	err := global.DB.Where("id in (?)", menuIds).Delete(&menus).Error
 	return menus, err
-}
-
-func (this *MenuRepository) QuerySetting(hasBtn uint) (model.Menu, error) {
-	var menu model.Menu
-	err := global.DB.Model(&model.Menu{}).
-		Where("has_btn = ?", hasBtn).First(&menu).Error
-	return menu, err
 }

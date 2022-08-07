@@ -1,25 +1,25 @@
 package bank
 
 import (
-	"memoirs/model"
+	"memoirs/model/bank"
 	"memoirs/model/vo"
 	"memoirs/utils"
 )
 
 type SubjectService struct{}
 
-func (sub *SubjectService) QueryAll() []model.SubjectCategory {
+func (sub *SubjectService) QueryAll() []bank.SubjectCategory {
 	subList := subjectMapper.QueryAll()
 	return subList
 }
 
-func (sub *SubjectService) QueryById(subId uint) model.SubjectCategory {
+func (sub *SubjectService) QueryById(subId uint) bank.SubjectCategory {
 	subject := subjectMapper.QueryById(subId)
 	return subject
 }
 
 func (sub *SubjectService) Insert(subReq vo.Subject) error {
-	var subject model.SubjectCategory
+	var subject bank.SubjectCategory
 	err := utils.CopyProperties(&subReq, &subject)
 	if err != nil {
 		return err
@@ -29,7 +29,7 @@ func (sub *SubjectService) Insert(subReq vo.Subject) error {
 }
 
 func (sub *SubjectService) Update(subReq vo.Subject) error {
-	var subject model.SubjectCategory
+	var subject bank.SubjectCategory
 	err := utils.CopyProperties(&subReq, &subject)
 	if err != nil {
 		return err

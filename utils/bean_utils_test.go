@@ -5,16 +5,22 @@ import (
 	"testing"
 )
 
-
 type User struct {
-	Name string `json:"name"`
+	Name  string `json:"name"`
 	Title string `json:"title"`
-	Age uint `json:"age"`
+	Age   uint   `json:"age"`
 }
 
 type UserInfo struct {
-	Name string `json:"name"`
-	Title string `json:"title"`
+	Name   string `json:"name"`
+	Title  string `json:"title"`
+	Status *bool  `json:"status"`
+}
+
+func TestUserInfo(t *testing.T) {
+	user := new(UserInfo)
+	fmt.Printf("%#v\n", user)
+	fmt.Printf("%#v\n", user.Status)
 }
 
 func TestBeanUtils(t *testing.T) {

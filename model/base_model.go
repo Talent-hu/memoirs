@@ -14,7 +14,7 @@ type BaseModel struct {
 
 type BaseQuestionModel struct {
 	BaseModel
-	LabelID   uint   `gorm:"comment:标签ID" json:"labelId"`
+	LabelID   string `gorm:"comment:标签ID" json:"labelId"`
 	Type      uint   `gorm:"int;unique;comment:试题类别(1:选择题,2:多选题,3:判断题,4:填空题,5:问答题)" json:"type"`
 	Name      string `gorm:"varchar(64);comment:题型名称" json:"name"`
 	Difficult string `gorm:"int;comment:难度(1:简单、2:中等、3:难)" json:"difficult"`

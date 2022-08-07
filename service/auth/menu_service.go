@@ -1,7 +1,7 @@
 package auth
 
 import (
-	"memoirs/model"
+	"memoirs/model/auth"
 	"memoirs/model/vo"
 	"memoirs/pkg/constant"
 	"memoirs/utils"
@@ -9,8 +9,8 @@ import (
 
 type MenuService struct{}
 
-func (menuService *MenuService) QueryUserMenu(userId uint) ([]vo.MenuTree, error) {
-	menuList, err := menuMapper.QueryFirstMenuInfo(userId, constant.SUPER_PARENT_ID)
+func (menuService *MenuService) QueryUserMenu(userId, parentId uint) ([]vo.MenuTree, error) {
+	menuList, err := menuMapper.QueryFirstMenuInfo(userId, parentId)
 	if err != nil {
 		return nil, err
 	}
@@ -27,7 +27,7 @@ func (menuService *MenuService) QueryUserMenu(userId uint) ([]vo.MenuTree, error
 }
 
 func (menuService *MenuService) AddMenu(menuReq vo.AddMenuRequest) error {
-	var menu model.Menu
+	var menu auth.Menu
 	err := utils.CopyProperties(&menuReq, &menu)
 	if err != nil {
 		return err

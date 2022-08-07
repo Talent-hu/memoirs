@@ -2,30 +2,30 @@ package bank
 
 import (
 	"memoirs/global"
-	"memoirs/model"
+	"memoirs/model/bank"
 )
 
 type SubjectRepository struct{}
 
-func (sub *SubjectRepository) QueryAll() []model.SubjectCategory {
-	var subList []model.SubjectCategory
+func (sub *SubjectRepository) QueryAll() []bank.SubjectCategory {
+	var subList []bank.SubjectCategory
 	global.DB.Find(&subList)
 	return subList
 }
 
-func (sub *SubjectRepository) QueryById(subId uint) model.SubjectCategory {
-	var subject model.SubjectCategory
+func (sub *SubjectRepository) QueryById(subId uint) bank.SubjectCategory {
+	var subject bank.SubjectCategory
 	global.DB.Find(&subject)
 	return subject
 }
 
-func (sub *SubjectRepository) Insert(subject model.SubjectCategory) error {
+func (sub *SubjectRepository) Insert(subject bank.SubjectCategory) error {
 	err := global.DB.Create(&subject).Error
 	return err
 }
 
-func (sub *SubjectRepository) Update(subject model.SubjectCategory) error {
-	db := global.DB.Model(&model.SubjectCategory{})
+func (sub *SubjectRepository) Update(subject bank.SubjectCategory) error {
+	db := global.DB.Model(&bank.SubjectCategory{})
 	db.Begin()
 	db.Where("id=?", subject.ID)
 	if subject.Code != "" {
@@ -43,6 +43,6 @@ func (sub *SubjectRepository) Update(subject model.SubjectCategory) error {
 }
 
 func (sub *SubjectRepository) DeleteById(subId uint) error {
-	err := global.DB.Delete(&model.SubjectCategory{}, subId).Error
+	err := global.DB.Delete(&bank.SubjectCategory{}, subId).Error
 	return err
 }

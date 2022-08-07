@@ -6,7 +6,7 @@ import (
 	"errors"
 	"go.uber.org/zap"
 	"memoirs/global"
-	"memoirs/model"
+	"memoirs/model/auth"
 	"memoirs/model/vo"
 	"memoirs/pkg/jwts"
 	"memoirs/utils"
@@ -50,7 +50,7 @@ func (auth *AuthService) Login(loginReq vo.LoginRequest) (any, error) {
 	return resp, err
 }
 
-func (auth *AuthService) NextToken(user *model.User) (any, error) {
+func (auth *AuthService) NextToken(user *auth.User) (any, error) {
 	jwt := jwts.NewJWT()
 	usrClaims := &jwts.UserClaims{
 		UserId:   user.ID,

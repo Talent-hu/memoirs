@@ -68,8 +68,6 @@ type AddMenuRequest struct {
 	Title     string `json:"title"`     // 菜单名称
 	Icon      string `json:"icon"`      // 菜单图标
 	ParentId  uint   `json:"parentId"`  // 父级菜单ID
-	FontType  string `json:"fontType"`  // 字体类型
-	FontSize  uint   `json:"fontSize"`  // 字体大小
 	HasBtn    bool   `json:"hasBtn"`    // 是否是按钮
 }
 
@@ -82,8 +80,6 @@ type MenuTree struct {
 	Title     string     `json:"title"`     // 菜单名称
 	Icon      string     `json:"icon"`      // 菜单图标
 	ParentId  uint       `json:"parentId"`  // 父级菜单ID
-	FontType  string     `json:"fontType"`  // 字体类型
-	FontSize  uint       `json:"fontSize"`  // 字体大小
 	HasBtn    bool       `json:"hasBtn"`    // 是否是按钮
 	ID        uint       `json:"menuId"`
 	Children  []MenuTree `json:"children"`
@@ -93,7 +89,9 @@ type DeleteMenu struct {
 	MenuIds []uint `json:"menuIds"` // 菜单ID列表
 }
 
-type QuerySetting struct {
-	FontType string `json:"fontType"` // 字体类型
-	FontSize uint   `json:"fontSize"` // 字体大小
+type Dict struct {
+	Code   string `json:"code"`
+	Name   string `json:"name"`
+	Status *bool  `json:"status"`
+	Remark string `json:"remark"`
 }

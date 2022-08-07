@@ -16,14 +16,19 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	//_ = global.DB.AutoMigrate(
-	//	&model.SubjectCategory{},
-	//	&model.QuestionLabel{},
-	//	&model.QuestionSelect{},
-	//	&model.QuestionJudge{},
-	//	&model.QuestionFillBack{},
-	//	&model.QuestionSimple{},
-	//)
+	_ = global.DB.AutoMigrate(
+	//&auth.SysDict{},
+	//&auth.SysDictItem{},
+	//&auth.User{},
+	//&auth.Role{},
+	//&auth.Menu{},
+	//&bank.SubjectCategory{},
+	//&bank.QuestionLabel{},
+	//&bank.QuestionSelect{},
+	//&bank.QuestionJudge{},
+	//&bank.QuestionFillBack{},
+	//&bank.QuestionSimple{},
+	)
 	addr := fmt.Sprintf(":%s", global.AppConfig.NetConf.Port)
 	server := router.InitRouter()
 	_ = server.Run(addr)

@@ -1,7 +1,7 @@
 package auth
 
 import (
-	"memoirs/model"
+	"memoirs/model/auth"
 	"memoirs/model/vo"
 	"memoirs/utils"
 )
@@ -41,7 +41,7 @@ func (roleService *RoleService) QueryUserRole(userId uint) ([]vo.RoleInfo, error
 }
 
 func (roleService *RoleService) AddRole(roleReq vo.RoleRequest) error {
-	var role model.Role
+	var role auth.Role
 	err := utils.CopyProperties(&roleReq, &role)
 	if err != nil {
 		return err
@@ -51,9 +51,9 @@ func (roleService *RoleService) AddRole(roleReq vo.RoleRequest) error {
 }
 
 func (roleService *RoleService) AddRoleAndMenu(relation vo.RoleMenuRelation) error {
-	var roleMenus []model.RoleMenu
+	var roleMenus []auth.RoleMenu
 	for _, menuId := range relation.MenuIds {
-		roleMenu := new(model.RoleMenu)
+		roleMenu := new(auth.RoleMenu)
 		roleMenu.RoleId = relation.RoleId
 		roleMenu.MenuId = menuId
 		roleMenus = append(roleMenus, *roleMenu)
@@ -63,7 +63,7 @@ func (roleService *RoleService) AddRoleAndMenu(relation vo.RoleMenuRelation) err
 }
 
 func (roleService *RoleService) UpdateRole(roleReq vo.RoleInfo) error {
-	var role model.Role
+	var role auth.Role
 	_ = utils.CopyProperties(&roleReq, &role)
 	role.ID = roleReq.RoleId
 	err := roleMapper.UpdateRole(role)

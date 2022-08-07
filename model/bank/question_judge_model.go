@@ -1,7 +1,9 @@
-package model
+package bank
+
+import "memoirs/model"
 
 type QuestionJudge struct {
-	BaseQuestionModel
+	model.BaseQuestionModel
 	Answer bool `gorm:"comment:答案" json:"answer"`
 }
 

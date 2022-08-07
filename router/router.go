@@ -19,7 +19,6 @@ func InitRouter() *gin.Engine {
 		RouterGroupApp.UserRouter.InitUserRouter(publicGroup)
 		RouterGroupApp.MenuRouter.InitMenuRouter(publicGroup)
 		RouterGroupApp.RoleRouter.InitRoleRouter(publicGroup)
-		RouterGroupApp.SystemRouter.InitSystemRouter(publicGroup)
 	}
 	{
 		RouterGroupApp.SubjectRouter.InitSubjectRouter(publicGroup)

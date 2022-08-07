@@ -1,7 +1,9 @@
-package model
+package bank
+
+import "memoirs/model"
 
 type QuestionFillBack struct {
-	BaseQuestionModel
+	model.BaseQuestionModel
 	Answer string `gorm:"varchar(255);comment:答案" json:"answer"`
 }
 

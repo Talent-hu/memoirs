@@ -10,7 +10,6 @@ type ServiceGroup struct {
 	auth.UserService
 	auth.RoleService
 	auth.MenuService
-	auth.SystemService
 	bank.SubjectService
 }
 

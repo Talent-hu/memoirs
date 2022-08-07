@@ -1,27 +1,39 @@
 package auth
 
 import (
+	"memoirs/global"
+	"memoirs/model/auth"
 	"memoirs/model/vo"
-	"memoirs/pkg/constant"
+	"memoirs/utils"
 )
 
 type SystemService struct{}
 
-func (systemService *SystemService) QuerySetting() (map[string]*vo.QuerySetting, error) {
-	// 先查询出侧边栏菜单设置
-	menu, _ := menuMapper.QuerySetting(constant.IS_MENU)
-	menuSetting := new(vo.QuerySetting)
-	menuSetting.FontSize = menu.FontSize
-	menuSetting.FontType = menu.FontType
+func (srv *SystemService) QueryDict(page vo.ListQuery) ([]auth.SysDict, int64, error) {
+	list, total, err := dictMapper.QueryDict(page)
+	return list, total, err
+}
 
-	// 查询出按钮菜单设置
-	btn, _ := menuMapper.QuerySetting(constant.IS_BTN)
-	btnSetting := new(vo.QuerySetting)
-	btnSetting.FontSize = btn.FontSize
-	btnSetting.FontType = btn.FontType
+func (srv *SystemService) AddDict(dict vo.Dict) error {
+	var sysDict auth.SysDict
+	err := utils.CopyProperties(&dict, &sysDict)
+	if err != nil {
+		return err
+	}
+	err = dictMapper.Insert(sysDict)
+	return err
+}
 
-	data := make(map[string]*vo.QuerySetting, 2)
-	data["menuSetting"] = menuSetting
-	data["btnSetting"] = btnSetting
-	return data, nil
+func (srv *SystemService) UpdateDict(dict vo.Dict) error {
+	var sysDict auth.SysDict
+	err := utils.CopyProperties(&dict, &sysDict)
+	if err != nil {
+		return err
+	}
+	err = dictMapper.Update(sysDict)
+	return err
+}
+
+func (srv *SystemService) DeleteDict(dictId uint) error {
+
 }

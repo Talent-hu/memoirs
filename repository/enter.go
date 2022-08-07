@@ -9,6 +9,9 @@ type RepositoryGroup struct {
 	auth.UserRepository
 	auth.RoleRepository
 	auth.MenuRepository
+	auth.DictRepository
+	auth.DictItemRepository
+
 	bank.SubjectRepository
 }
 

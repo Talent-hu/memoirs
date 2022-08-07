@@ -35,7 +35,7 @@ func (this *Config) GetLogMode() string {
 func NewMysql(config *Config) *gorm.DB {
 	mysqlConfig := mysql.Config{
 		DSN:                       config.Dns(),
-		DefaultStringSize:         191,
+		DefaultStringSize:         255,
 		SkipInitializeWithVersion: false,
 	}
 	db, err := gorm.Open(mysql.New(mysqlConfig), gormLogConfig(config.LogMode))
@@ -51,7 +51,9 @@ func NewMysql(config *Config) *gorm.DB {
 }
 
 func gormLogConfig(logMode string) *gorm.Config {
-	config := &gorm.Config{DisableForeignKeyConstraintWhenMigrating: true}
+	config := &gorm.Config{
+		DisableForeignKeyConstraintWhenMigrating: true,
+	}
 	_default := logger.New(NewWriter(log.New(os.Stdout, "\r\n", log.LstdFlags)), logger.Config{
 		SlowThreshold: 200 * time.Millisecond,
 		LogLevel:      logger.Warn,
