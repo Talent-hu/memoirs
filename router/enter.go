@@ -9,6 +9,7 @@ type RouterGroup struct {
 	auth.UserRouter
 	auth.MenuRouter
 	auth.RoleRouter
+	auth.SystemRouter
 	bank.SubjectRouter
 }
 

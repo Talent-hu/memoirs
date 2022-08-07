@@ -95,3 +95,18 @@ type Dict struct {
 	Status *bool  `json:"status"`
 	Remark string `json:"remark"`
 }
+
+type DictItem struct {
+	Name     string `json:"name"`
+	Value    string `json:"value"`
+	DictCode string `json:"dictCode"`
+	Sort     int    `json:"sort"`
+	Status   *bool  `json:"status"`
+	Ext      string `json:"ext"`
+	Remark   string `json:"remark"`
+}
+
+type PageDictItem struct {
+	DictItem
+	ListQuery
+}

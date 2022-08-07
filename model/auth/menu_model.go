@@ -8,7 +8,7 @@ type Menu struct {
 	Name      string `gorm:"comment:路由名称" json:"name"`
 	Component string `gorm:"comment:对应前端文件路径" json:"component"`
 	Hidden    *bool  `gorm:"comment:是否隐藏列表" json:"hidden"`
-	Sort      int    `gorm:"int;comment:排序标记" json:"sort"`
+	Sort      uint   `gorm:"int;comment:排序标记" json:"sort"`
 	Title     string `gorm:"comment:菜单名称" json:"title"`
 	Icon      string `gorm:"comment:菜单图标" json:"icon"`
 	ParentId  uint   `gorm:"comment:父级菜单ID" json:"parentId"`

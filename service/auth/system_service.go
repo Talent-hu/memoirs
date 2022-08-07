@@ -37,3 +37,40 @@ func (srv *SystemService) DeleteDict(dictId uint) error {
 	err := dictMapper.Delete(dictId)
 	return err
 }
+
+func (srv *SystemService) QueryDictItemList(pageItem vo.PageDictItem) (list []auth.SysDictItem, total int64, err error) {
+	item := pageItem.DictItem
+	query := pageItem.ListQuery
+	var dictItem auth.SysDictItem
+	err = utils.CopyProperties(&item, &dictItem)
+	if err != nil {
+		return
+	}
+	list, total, err = dictItemMapper.QueryAll(dictItem, query)
+	return list, total, err
+}
+
+func (srv *SystemService) InsertDictItem(item vo.DictItem) (err error) {
+	var dictItem auth.SysDictItem
+	err = utils.CopyProperties(&item, &dictItem)
+	if err != nil {
+		return
+	}
+	err = dictItemMapper.Insert(dictItem)
+	return err
+}
+
+func (srv *SystemService) UpdateDictItem(item vo.DictItem) (err error) {
+	var dictItem auth.SysDictItem
+	err = utils.CopyProperties(&item, &dictItem)
+	if err != nil {
+		return
+	}
+	err = dictItemMapper.Update(dictItem)
+	return err
+}
+
+func (srv *SystemService) DeleteDictItem(itemId uint) (err error) {
+	err = dictItemMapper.Delete(itemId)
+	return err
+}

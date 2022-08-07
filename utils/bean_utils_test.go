@@ -15,6 +15,7 @@ type UserInfo struct {
 	Name   string `json:"name"`
 	Title  string `json:"title"`
 	Status *bool  `json:"status"`
+	Age    uint   `json:"age"`
 }
 
 func TestUserInfo(t *testing.T) {
