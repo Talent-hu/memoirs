@@ -51,9 +51,9 @@ func (api *SystemApi) UpdateDict(ctx *gin.Context) {
 }
 
 func (api *SystemApi) DeleteDict(ctx *gin.Context) {
-	dictIdStr := ctx.Request.URL.Query().Get("dictId")
+	dictIdStr := ctx.Request.URL.Query().Get("id")
 	if dictIdStr == "" {
-		response.FailWithMessage(ctx, "dictId不能为空")
+		response.FailWithMessage(ctx, "id不能为空")
 		return
 	}
 	dictId, _ := strconv.Atoi(dictIdStr)

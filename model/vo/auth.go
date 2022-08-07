@@ -63,24 +63,24 @@ type AddMenuRequest struct {
 	Path      string `json:"path"`      // 路由path
 	Name      string `json:"name"`      // 路由名称
 	Component string `json:"component"` // 对应前端文件路径
-	Hidden    bool   `json:"hidden"`    // 是否隐藏列表
-	Sort      int    `json:"sort"`      // 排序标记
+	Hidden    *bool  `json:"hidden"`    // 是否隐藏列表
+	Sort      uint   `json:"sort"`      // 排序标记
 	Title     string `json:"title"`     // 菜单名称
 	Icon      string `json:"icon"`      // 菜单图标
 	ParentId  uint   `json:"parentId"`  // 父级菜单ID
-	HasBtn    bool   `json:"hasBtn"`    // 是否是按钮
+	HasBtn    *bool  `json:"hasBtn"`    // 是否是按钮
 }
 
 type MenuTree struct {
 	Path      string     `json:"path"`      // 路由path
 	Name      string     `json:"name"`      // 路由名称
 	Component string     `json:"component"` // 对应前端文件路径
-	Hidden    bool       `json:"hidden"`    // 是否隐藏列表
-	Sort      int        `json:"sort"`      // 排序标记
+	Hidden    *bool      `json:"hidden"`    // 是否隐藏列表
+	Sort      uint       `json:"sort"`      // 排序标记
 	Title     string     `json:"title"`     // 菜单名称
 	Icon      string     `json:"icon"`      // 菜单图标
 	ParentId  uint       `json:"parentId"`  // 父级菜单ID
-	HasBtn    bool       `json:"hasBtn"`    // 是否是按钮
+	HasBtn    *bool      `json:"hasBtn"`    // 是否是按钮
 	ID        uint       `json:"menuId"`
 	Children  []MenuTree `json:"children"`
 }
@@ -100,13 +100,14 @@ type DictItem struct {
 	Name     string `json:"name"`
 	Value    string `json:"value"`
 	DictCode string `json:"dictCode"`
-	Sort     int    `json:"sort"`
+	Sort     uint   `json:"sort"`
 	Status   *bool  `json:"status"`
 	Ext      string `json:"ext"`
 	Remark   string `json:"remark"`
 }
 
 type PageDictItem struct {
-	DictItem
 	ListQuery
+	Name     string `json:"name"`
+	DictCode string `json:"dictCode"`
 }

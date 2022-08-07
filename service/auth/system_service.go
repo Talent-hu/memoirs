@@ -39,10 +39,9 @@ func (srv *SystemService) DeleteDict(dictId uint) error {
 }
 
 func (srv *SystemService) QueryDictItemList(pageItem vo.PageDictItem) (list []auth.SysDictItem, total int64, err error) {
-	item := pageItem.DictItem
 	query := pageItem.ListQuery
 	var dictItem auth.SysDictItem
-	err = utils.CopyProperties(&item, &dictItem)
+	err = utils.CopyProperties(&pageItem, &dictItem)
 	if err != nil {
 		return
 	}

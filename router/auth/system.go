@@ -12,14 +12,14 @@ func (router *SystemRouter) InitSystemRouter(Router *gin.RouterGroup) {
 	privateRouter := Router.Group("system").Use(middleware.GinJwt())
 	systemApi := api.ApiGroupApp.SystemApi
 	{
-		privateRouter.GET("/queryDict", systemApi.QueryDictAll)
-		privateRouter.POST("/addDict", systemApi.AddDict)
-		privateRouter.POST("/updateDict", systemApi.UpdateDict)
-		privateRouter.POST("/deleteDict", systemApi.DeleteDict)
+		privateRouter.POST("/dict/list", systemApi.QueryDictAll)
+		privateRouter.POST("/dict/add", systemApi.AddDict)
+		privateRouter.POST("/dict/update", systemApi.UpdateDict)
+		privateRouter.POST("/dict/delete", systemApi.DeleteDict)
 
-		privateRouter.GET("/queryDictItem", systemApi.QueryDictItem)
-		privateRouter.POST("/addDictItem", systemApi.AddDictItem)
-		privateRouter.POST("/updateDictItem", systemApi.UpdateDictItem)
-		privateRouter.POST("/deleteDictItem", systemApi.DeleteDictItem)
+		privateRouter.POST("/item/list", systemApi.QueryDictItem)
+		privateRouter.POST("/item/add", systemApi.AddDictItem)
+		privateRouter.POST("/item/update", systemApi.UpdateDictItem)
+		privateRouter.POST("/item/delete", systemApi.DeleteDictItem)
 	}
 }
