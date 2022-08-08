@@ -97,6 +97,7 @@ type Dict struct {
 }
 
 type DictItem struct {
+	ID       uint   `json:"id"`
 	Name     string `json:"name"`
 	Value    string `json:"value"`
 	DictCode string `json:"dictCode"`

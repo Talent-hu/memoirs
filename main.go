@@ -5,6 +5,8 @@ import (
 	"memoirs/config"
 	_ "memoirs/docs"
 	"memoirs/global"
+	"memoirs/model/auth"
+	"memoirs/model/bank"
 	"memoirs/router"
 )
 
@@ -16,20 +18,26 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	_ = global.DB.AutoMigrate(
-	//&auth.SysDict{},
-	//&auth.SysDictItem{},
-	//&auth.User{},
-	//&auth.Role{},
-	//&auth.Menu{},
-	//&bank.SubjectCategory{},
-	//&bank.QuestionLabel{},
-	//&bank.QuestionSelect{},
-	//&bank.QuestionJudge{},
-	//&bank.QuestionFillBack{},
-	//&bank.QuestionSimple{},
-	)
+	//CreateTable()
 	addr := fmt.Sprintf(":%s", global.AppConfig.NetConf.Port)
 	server := router.InitRouter()
 	_ = server.Run(addr)
+}
+
+func CreateTable() {
+	_ = global.DB.AutoMigrate(
+		&auth.SysDict{},
+		&auth.SysDictItem{},
+		&auth.User{},
+		&auth.UserRole{},
+		&auth.Role{},
+		&auth.RoleMenu{},
+		&auth.Menu{},
+		&bank.SubjectCategory{},
+		&bank.QuestionLabel{},
+		&bank.QuestionSelect{},
+		&bank.QuestionJudge{},
+		&bank.QuestionFillBack{},
+		&bank.QuestionSimple{},
+	)
 }
