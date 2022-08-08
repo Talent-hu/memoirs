@@ -25,12 +25,17 @@ func (repo *DictItemRepository) QueryAll(dict auth.SysDictItem, page vo.ListQuer
 	if err != nil {
 		return
 	}
-	err = db.Limit(pageSize).Offset(offset).Find(&dictItemList).Error
+	err = db.Group("dict_code").
+		Order("sort asc").
+		Limit(pageSize).
+		Offset(offset).
+		Find(&dictItemList).
+		Error
 	return dictItemList, total, err
 }
 
 func (repo *DictItemRepository) Insert(dict auth.SysDictItem) (err error) {
-	if errors.Is(global.DB.Where("name=? or value=?", dict.Name, dict.Value).First(&dict).Error, gorm.ErrRecordNotFound) {
+	if !errors.Is(global.DB.Where("name=? or value=?", dict.Name, dict.Value).First(&dict).Error, gorm.ErrRecordNotFound) {
 		return errors.New("数据已存在，请不要重复录入")
 	}
 	err = global.DB.Create(&dict).Error

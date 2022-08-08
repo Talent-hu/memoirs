@@ -4,7 +4,7 @@ import "memoirs/model"
 
 type Menu struct {
 	model.BaseModel
-	Path      string `gorm:"comment:路由path" json:"path"`
+	Path      string `gorm:"unique;comment:路由path" json:"path"`
 	Name      string `gorm:"comment:路由名称" json:"name"`
 	Component string `gorm:"comment:对应前端文件路径" json:"component"`
 	Hidden    *bool  `gorm:"comment:是否隐藏列表" json:"hidden"`

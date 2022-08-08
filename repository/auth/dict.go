@@ -24,7 +24,7 @@ func (repo *DictRepository) QueryDict(page vo.ListQuery) (list []auth.SysDict, t
 }
 
 func (repo *DictRepository) Insert(dict auth.SysDict) (err error) {
-	if errors.Is(global.DB.Where("code=? or name=?", dict.Code, dict.Name).Find(&dict).Error, gorm.ErrRecordNotFound) {
+	if !errors.Is(global.DB.Where("code=? or name=?", dict.Code, dict.Name).Find(&dict).Error, gorm.ErrRecordNotFound) {
 		return errors.New("数据已存在，请不要重复录入")
 	}
 	err = global.DB.Create(&dict).Error
