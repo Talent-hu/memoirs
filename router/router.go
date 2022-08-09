@@ -20,6 +20,7 @@ func InitRouter() *gin.Engine {
 		RouterGroupApp.MenuRouter.InitMenuRouter(publicGroup)
 		RouterGroupApp.RoleRouter.InitRoleRouter(publicGroup)
 		RouterGroupApp.SystemRouter.InitSystemRouter(publicGroup)
+		RouterGroupApp.AreaRouter.InitAreaRouter(publicGroup)
 	}
 	{
 		RouterGroupApp.SubjectRouter.InitSubjectRouter(publicGroup)

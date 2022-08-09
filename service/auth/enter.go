@@ -10,4 +10,5 @@ var (
 	menuMapper     = repository.RepositoryGroupApp.MenuRepository
 	dictMapper     = repository.RepositoryGroupApp.DictRepository
 	dictItemMapper = repository.RepositoryGroupApp.DictItemRepository
+	areaMapper     = repository.RepositoryGroupApp.AreaRepository
 )

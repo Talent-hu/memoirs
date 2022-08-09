@@ -11,8 +11,8 @@ import (
 
 type BaseModel struct {
 	ID        uint           `gorm:"primary key;comment:主键ID" json:"id"`
-	CreatedAt MyTime         `gorm:"comment:创建时间" json:"createdAt"`
-	UpdatedAt MyTime         `gorm:"comment:更新时间" json:"updatedAt"`
+	CreatedAt MyTime         `gorm:"type:datetime(3);comment:创建时间" json:"createdAt"`
+	UpdatedAt MyTime         `gorm:"type:datetime(3);comment:更新时间" json:"updatedAt"`
 	DeletedAt gorm.DeletedAt `gorm:"index;comment:删除时间" json:"-"`
 }
 
@@ -24,6 +24,14 @@ type BaseQuestionModel struct {
 	Difficult string `gorm:"int;comment:难度(1:简单、2:中等、3:难)" json:"difficult"`
 	Title     string `gorm:"longtext(1000);comment:试题题目" json:"title"`
 	Analysis  string `gorm:"longtext(500);comment:解析" json:"analysis"`
+}
+
+type BaseTreeModel struct {
+	ID        string         `gorm:"type:varchar(16);primary key;comment:主键ID" json:"id"`
+	ParentId  string         `gorm:"type:varchar(16);comment:父级编码" json:"parentId"`
+	CreatedAt MyTime         `gorm:"type:datetime(3);comment:创建时间" json:"createdAt"`
+	UpdatedAt MyTime         `gorm:"type:datetime(3);comment:更新时间" json:"updatedAt"`
+	DeletedAt gorm.DeletedAt `gorm:"index;comment:删除时间" json:"-"`
 }
 
 type MyTime time.Time
@@ -47,7 +55,7 @@ func (t MyTime) MarshalJSON() ([]byte, error) {
 
 func (t MyTime) Value() (driver.Value, error) {
 	// MyTime 转换成 time.Time 类型
-	tTime := time.Time(t)
+	tTime := time.Now()
 	return tTime.Format("2006-01-02 15:04:05"), nil
 }
 

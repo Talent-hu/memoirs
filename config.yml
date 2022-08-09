@@ -10,7 +10,7 @@ mysql:
   path: 112.124.153.115
   port: 3309
   db-name: memoirs
-  config: charset=utf8mb4&parseTime=true&loc=Local
+  config: charset=utf8mb4&parseTime=true&loc=Asia%2fShanghai
   max-idle-conns: 20
   max-open-conns: 20
   log-mode: debug

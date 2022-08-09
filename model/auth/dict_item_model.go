@@ -7,6 +7,7 @@ type SysDictItem struct {
 	Name     string `gorm:"varchar(50);comment:字典项名称" json:"name"`
 	Value    string `gorm:"varchar(50);comment:字典项值" json:"value"`
 	DictCode string `gorm:"varchar(50);comment:字典编码" json:"dictCode"`
+	ParentId uint   `gorm:"comment:父级ID" json:"parentId"`
 	Sort     uint   `gorm:"int;default 0;comment:排序" json:"sort"`
 	Status   *bool  `gorm:"default 0;comment:状态（0 停用 1正常）" json:"status"`
 	Ext      string `gorm:"comment:预留字段" json:"ext"`

@@ -8,4 +8,5 @@ var (
 	roleService   = service.ServiceGroupApp.RoleService
 	menuService   = service.ServiceGroupApp.MenuService
 	systemService = service.ServiceGroupApp.SystemService
+	areaService   = service.ServiceGroupApp.AreaService
 )

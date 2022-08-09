@@ -10,6 +10,7 @@ type ApiGroup struct {
 	auth.RoleApi
 	auth.MenuApi
 	auth.SystemApi
+	auth.AreaApi
 	bank.SubjectApi
 }
 

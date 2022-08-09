@@ -26,6 +26,7 @@ func main() {
 
 func CreateTable() {
 	_ = global.DB.AutoMigrate(
+		&auth.Area{},
 		&auth.SysDict{},
 		&auth.SysDictItem{},
 		&auth.User{},

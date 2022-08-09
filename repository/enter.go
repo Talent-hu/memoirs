@@ -11,7 +11,7 @@ type RepositoryGroup struct {
 	auth.MenuRepository
 	auth.DictRepository
 	auth.DictItemRepository
-
+	auth.AreaRepository
 	bank.SubjectRepository
 }
 
