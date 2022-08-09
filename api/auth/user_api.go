@@ -8,6 +8,7 @@ import (
 	"memoirs/pkg/response"
 	"memoirs/utils"
 	"memoirs/validate"
+	"net/http"
 )
 
 type UserApi struct{}
@@ -60,7 +61,7 @@ func (this *UserApi) Logout(ctx *gin.Context) {
 		response.FailWithMessage(ctx, err.Error())
 		return
 	}
-	response.Ok(ctx)
+	response.FailWithDetail(ctx, http.StatusUnauthorized, "退出登录成功！")
 }
 
 // @Tag UserApi

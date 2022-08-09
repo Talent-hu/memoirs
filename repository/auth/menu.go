@@ -30,6 +30,11 @@ func (this *MenuRepository) AddMenu(menu auth.Menu) error {
 	return err
 }
 
+func (this *MenuRepository) Update(menu auth.Menu) error {
+	err := global.DB.Model(&auth.Menu{}).Updates(menu).Error
+	return err
+}
+
 func (this *MenuRepository) QueryMenuInfo(userId uint) ([]auth.Menu, error) {
 	var menuList []auth.Menu
 	err := global.DB.Table("user_role").
