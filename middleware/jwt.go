@@ -25,7 +25,8 @@ func GinJwt() gin.HandlerFunc {
 		claims, err := jwt.ParseToken(token)
 		if err != nil {
 			if err == jwts.TokenExpired {
-				response.FailWithMessage(ctx, "授权已过期")
+				global.Log.Error("token已过期，请重新登录")
+				response.FailWithDetail(ctx, http.StatusUnauthorized, "授权已过期")
 				ctx.Abort()
 				return
 			}

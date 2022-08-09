@@ -1,7 +1,9 @@
 package auth
 
 import (
+	"context"
 	"github.com/gin-gonic/gin"
+	"memoirs/global"
 	"memoirs/model/vo"
 	"memoirs/pkg/response"
 	"memoirs/utils"
@@ -44,6 +46,21 @@ func (this *UserApi) PublicKey(ctx *gin.Context) {
 		response.FailWithMessage(ctx, err.Error())
 	}
 	response.OkWithData(ctx, resp)
+}
+
+func (this *UserApi) Logout(ctx *gin.Context) {
+	claims, err := utils.GetClaims(ctx)
+	if err != nil {
+		response.FailWithMessage(ctx, err.Error())
+		return
+	}
+	identity := claims.UserInfo.Identity
+	err = global.Redis.Del(context.Background(), identity).Err()
+	if err != nil {
+		response.FailWithMessage(ctx, err.Error())
+		return
+	}
+	response.Ok(ctx)
 }
 
 // @Tag UserApi
