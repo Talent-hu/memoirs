@@ -60,7 +60,7 @@ type DeletedRole struct {
 }
 
 type AddMenuRequest struct {
-	ID        uint   `json:"id"`        // 菜单ID
+	MenuId    uint   `json:"menuId"`    // 菜单ID
 	Path      string `json:"path"`      // 路由path
 	Name      string `json:"name"`      // 路由名称
 	Component string `json:"component"` // 对应前端文件路径

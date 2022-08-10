@@ -1,6 +1,8 @@
 package auth
 
 import (
+	"errors"
+	"gorm.io/gorm"
 	"memoirs/global"
 	"memoirs/model/auth"
 	"memoirs/pkg/constant"
@@ -31,7 +33,13 @@ func (this *MenuRepository) AddMenu(menu auth.Menu) error {
 }
 
 func (this *MenuRepository) Update(menu auth.Menu) error {
-	err := global.DB.Model(&auth.Menu{}).Updates(menu).Error
+	var menuModel auth.Menu
+	if errors.Is(global.DB.First(&menuModel, menu.ID).Error, gorm.ErrRecordNotFound) {
+		return errors.New("该菜单数据不存在")
+	}
+	err := global.DB.Model(&auth.Menu{}).
+		Where("id=?", menu.ID).
+		Updates(menu).Error
 	return err
 }
 

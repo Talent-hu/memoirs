@@ -32,10 +32,10 @@ func (menuService *MenuService) AddMenu(menuReq vo.AddMenuRequest) error {
 	if err != nil {
 		return err
 	}
-	if menuReq.ID == constant.SUPER_PARENT_ID {
+	if menuReq.MenuId == constant.SUPER_PARENT_ID {
 		err = menuMapper.AddMenu(menu)
 	} else {
-		menu.ID = menuReq.ID
+		menu.ID = menuReq.MenuId
 		err = menuMapper.Update(menu)
 	}
 	return err
