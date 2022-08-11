@@ -65,6 +65,6 @@ func (this *MenuRepository) QueryFirstMenuInfo(userId, superMenuId uint) ([]auth
 
 func (this *MenuRepository) DeleteMenu(menuIds []uint) (auth.Menu, error) {
 	var menus auth.Menu
-	err := global.DB.Where("id in (?)", menuIds).Delete(&menus).Error
+	err := global.DB.Unscoped().Where("id in (?)", menuIds).Delete(&menus).Error
 	return menus, err
 }

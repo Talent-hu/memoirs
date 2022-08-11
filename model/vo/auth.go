@@ -113,3 +113,13 @@ type PageDictItem struct {
 	Name     string `json:"name"`
 	DictCode string `json:"dictCode"`
 }
+
+type CasbinInfo struct {
+	Path   string `json:"path"`   // 路径
+	Method string `json:"method"` // 方法
+}
+
+type CasbinInReceive struct {
+	RoleCode    string       `json:"roleCode"` // 权限id
+	CasbinInfos []CasbinInfo `json:"casbinInfos"`
+}

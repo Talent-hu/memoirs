@@ -51,12 +51,20 @@ func (auth *AuthService) Login(loginReq vo.LoginRequest) (any, error) {
 }
 
 func (auth *AuthService) NextToken(user *auth.User) (any, error) {
+	// 查询用户的角色列表
+	userInfo, _ := userMapper.QueryUserInfo(user.ID)
+	roles := userInfo.Roles
+	var roleCodes []string
+	for _, item := range roles {
+		roleCodes = append(roleCodes, item.RoleCode)
+	}
 	jwt := jwts.NewJWT()
 	usrClaims := &jwts.UserClaims{
-		UserId:   user.ID,
-		UserName: user.Username,
-		NickName: user.NickName,
-		Identity: user.Identity,
+		UserId:    user.ID,
+		UserName:  user.Username,
+		NickName:  user.NickName,
+		Identity:  user.Identity,
+		RoleCodes: roleCodes,
 	}
 	claims := jwt.CreateClaims(usrClaims)
 	token, err := jwt.CreateToken(claims)

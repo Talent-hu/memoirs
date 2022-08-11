@@ -26,13 +26,13 @@ func main() {
 
 func CreateTable() {
 	_ = global.DB.AutoMigrate(
-		&auth.Area{},
-		&auth.SysDict{},
-		&auth.SysDictItem{},
-		&auth.User{},
-		&auth.UserRole{},
-		&auth.Role{},
-		&auth.RoleMenu{},
+		//&auth.Area{},
+		//&auth.SysDict{},
+		//&auth.SysDictItem{},
+		//&auth.User{},
+		//&auth.UserRole{},
+		//&auth.Role{},
+		//&auth.RoleMenu{},
 		&auth.Menu{},
 		&bank.SubjectCategory{},
 		&bank.QuestionLabel{},
