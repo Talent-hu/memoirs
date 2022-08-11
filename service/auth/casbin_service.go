@@ -13,8 +13,6 @@ import (
 
 type CasbinService struct{}
 
-var CasbinServiceApp = new(CasbinService)
-
 func (casbinService *CasbinService) UpdateCasbin(roleCode string, casbinInfos []vo.CasbinInfo) error {
 	casbinService.ClearCasbin(0, roleCode)
 	rules := [][]string{}
