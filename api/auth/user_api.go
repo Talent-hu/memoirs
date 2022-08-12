@@ -88,3 +88,7 @@ func (this *UserApi) QueryUserList(ctx *gin.Context) {
 	}
 	response.OkWithData(ctx, resp)
 }
+
+func (this *UserApi) UpdatePassword(ctx *gin.Context) {
+
+}

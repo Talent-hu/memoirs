@@ -68,26 +68,15 @@ func (menuService *MenuService) BuildMenuTree(userId uint) ([]vo.MenuTree, error
 	return resp, nil
 }
 
-func BuildTree(menuList []vo.MenuTree, rootId uint) []vo.MenuTree {
-	var result []vo.MenuTree
-	for _, menu := range menuList {
-		if menu.ParentId == rootId {
-			result = append(result, findChild(menu, menuList))
+func BuildTree(list []vo.MenuTree, rootId uint) []vo.MenuTree {
+	var nodeList []vo.MenuTree
+	for _, item := range list {
+		if item.ParentId == rootId {
+			item.Children = BuildTree(list, item.ID)
+			nodeList = append(nodeList, item)
 		}
 	}
-	return result
-}
-
-func findChild(rootNode vo.MenuTree, menuList []vo.MenuTree) vo.MenuTree {
-	for _, menuNode := range menuList {
-		if rootNode.ID == menuNode.ParentId {
-			if menuNode.Children == nil {
-				menuNode.Children = []vo.MenuTree{}
-			}
-			rootNode.Children = append(rootNode.Children, findChild(menuNode, menuList))
-		}
-	}
-	return rootNode
+	return nodeList
 }
 
 func (menuService *MenuService) DeleteMenu(menuIds vo.DeleteMenu) error {
