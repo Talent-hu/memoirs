@@ -11,6 +11,7 @@ type RouterGroup struct {
 	auth.RoleRouter
 	auth.SystemRouter
 	auth.AreaRouter
+	auth.CasbinRouter
 	bank.SubjectRouter
 }
 

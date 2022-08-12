@@ -21,12 +21,12 @@ func InitRouter() *gin.Engine {
 		RouterGroupApp.RoleRouter.InitRoleRouter(publicGroup)
 		RouterGroupApp.SystemRouter.InitSystemRouter(publicGroup)
 		RouterGroupApp.AreaRouter.InitAreaRouter(publicGroup)
+		RouterGroupApp.CasbinRouter.InitCasbinRouter(publicGroup)
 	}
 	{
 		RouterGroupApp.SubjectRouter.InitSubjectRouter(publicGroup)
 	}
-	url := ginSwagger.URL("http://127.0.0.1:8888/swagger/doc.json")
-	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))
+	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	return router
 }

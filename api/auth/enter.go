@@ -9,4 +9,5 @@ var (
 	menuService   = service.ServiceGroupApp.MenuService
 	systemService = service.ServiceGroupApp.SystemService
 	areaService   = service.ServiceGroupApp.AreaService
+	casbinService = service.ServiceGroupApp.CasbinService
 )

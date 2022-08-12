@@ -12,6 +12,7 @@ type ServiceGroup struct {
 	auth.MenuService
 	auth.SystemService
 	auth.AreaService
+	auth.CasbinService
 	bank.SubjectService
 }
 

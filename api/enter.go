@@ -11,6 +11,7 @@ type ApiGroup struct {
 	auth.MenuApi
 	auth.SystemApi
 	auth.AreaApi
+	auth.CasbinApi
 	bank.SubjectApi
 }
 

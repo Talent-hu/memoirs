@@ -11,6 +11,7 @@ var (
 	DeleteRoleVerify     = Rules{"RoleId": {NotEmpty(), Ge("0")}}
 	AddMenuVerify        = Rules{"Path": {NotEmpty()}, "Name": {NotEmpty()}, "Sort": {NotEmpty()}, "Title": {NotEmpty()}, "Icon": {NotEmpty()}, "ParentId": {NotEmpty()}, "FontType": {NotEmpty()}, "FontSize": {NotEmpty()}, "HasBtn": {NotEmpty()}}
 	DeleteMenuVerify     = Rules{"MenuIds": {NotEmpty()}}
+	CasbinVerify         = Rules{"RoleCode": {NotEmpty()}, "CasbinInfos": {NotEmpty()}}
 )
 
 // bank module
