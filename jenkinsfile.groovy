@@ -26,6 +26,7 @@ pipeline {
                         echo "kill -9 pid:${pid}"
                         kill -9 $pid
                     fi
+                    sleep(5)
                    '''
             }
         }
