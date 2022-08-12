@@ -9,7 +9,8 @@ pipeline {
         }
         stage('编译代码') {
             steps {
-                sh '''
+                sh  '''
+                   echo ${PATH}
                    echo ${WORKSPACE}
                    cd  ${WORKSPACE}
                    go build -o /home/study/memoirs
