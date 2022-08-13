@@ -88,3 +88,10 @@ func (menuService *MenuService) IsHidden(menuId uint, hidden *bool) error {
 	err := menuMapper.UpdateByHidden(menuId, hidden)
 	return err
 }
+
+func (menuService *MenuService) SortMenu(req []vo.SortMenu) (err error) {
+	for _, item := range req {
+		err = menuMapper.UpdateBySort(item.MenuId, item.Sort)
+	}
+	return
+}

@@ -60,32 +60,32 @@ type DeletedRole struct {
 }
 
 type AddMenuRequest struct {
-	MenuId    uint   `json:"menuId"`    // 菜单ID
-	Path      string `json:"path"`      // 路由path
-	Name      string `json:"name"`      // 路由名称
-	Component string `json:"component"` // 对应前端文件路径
-	Hidden    *bool  `json:"hidden"`    // 是否隐藏列表
-	Sort      uint   `json:"sort"`      // 排序标记
-	Title     string `json:"title"`     // 菜单名称
-	Icon      string `json:"icon"`      // 菜单图标
-	ParentId  uint   `json:"parentId"`  // 父级菜单ID
-	HasBtn    *bool  `json:"hasBtn"`    // 是否是按钮
-	Perm      string `json:"perm"`
+	MenuId     uint   `json:"menuId"`    // 菜单ID
+	Path       string `json:"path"`      // 路由path
+	Name       string `json:"name"`      // 路由名称
+	Component  string `json:"component"` // 对应前端文件路径
+	Hidden     *bool  `json:"hidden"`    // 是否隐藏列表
+	Sort       uint   `json:"sort"`      // 排序标记
+	Title      string `json:"title"`     // 菜单名称
+	Icon       string `json:"icon"`      // 菜单图标
+	ParentId   uint   `json:"parentId"`  // 父级菜单ID
+	HasBtn     *bool  `json:"hasBtn"`    // 是否是按钮
+	Permission string `json:"permission"`
 }
 
 type MenuTree struct {
-	ID        uint       `json:"menuId"`
-	Path      string     `json:"path"`      // 路由path
-	Name      string     `json:"name"`      // 路由名称
-	Component string     `json:"component"` // 对应前端文件路径
-	Hidden    *bool      `json:"hidden"`    // 是否隐藏列表
-	Sort      uint       `json:"sort"`      // 排序标记
-	Title     string     `json:"title"`     // 菜单名称
-	Icon      string     `json:"icon"`      // 菜单图标
-	ParentId  uint       `json:"parentId"`  // 父级菜单ID
-	HasBtn    *bool      `json:"hasBtn"`    // 是否是按钮
-	Perm      string     `json:"perm"`
-	Children  []MenuTree `json:"children"`
+	ID         uint       `json:"menuId"`
+	Path       string     `json:"path"`      // 路由path
+	Name       string     `json:"name"`      // 路由名称
+	Component  string     `json:"component"` // 对应前端文件路径
+	Hidden     *bool      `json:"hidden"`    // 是否隐藏列表
+	Sort       uint       `json:"sort"`      // 排序标记
+	Title      string     `json:"title"`     // 菜单名称
+	Icon       string     `json:"icon"`      // 菜单图标
+	ParentId   uint       `json:"parentId"`  // 父级菜单ID
+	HasBtn     *bool      `json:"hasBtn"`    // 是否是按钮
+	Permission string     `json:"permission"`
+	Children   []MenuTree `json:"children"`
 }
 
 type DeleteMenu struct {
@@ -95,6 +95,11 @@ type DeleteMenu struct {
 type IsHidden struct {
 	ID     uint  `json:"menuId"`
 	Hidden *bool `json:"hidden"` // 是否隐藏列表
+}
+
+type SortMenu struct {
+	MenuId uint `json:"menuId"`
+	Sort   uint `json:"sort"`
 }
 
 type Dict struct {

@@ -103,3 +103,14 @@ func (this *MenuApi) IsHidden(ctx *gin.Context) {
 	}
 	response.Ok(ctx)
 }
+
+func (this *MenuApi) SortMenu(ctx *gin.Context) {
+	var req []vo.SortMenu
+	_ = ctx.ShouldBindJSON(&req)
+	err := menuService.SortMenu(req)
+	if err != nil {
+		response.FailWithMessage(ctx, err.Error())
+		return
+	}
+	response.Ok(ctx)
+}
