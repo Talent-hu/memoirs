@@ -103,7 +103,7 @@ type SortMenu struct {
 }
 
 type SortMenuList struct {
-	SortMenuList []SortMenu `json:"sortMenu"`
+	SortMenuList []SortMenu `json:"sortMenus"`
 }
 
 type Dict struct {
