@@ -102,6 +102,10 @@ type SortMenu struct {
 	Sort   uint `json:"sort"`
 }
 
+type SortMenuList struct {
+	SortMenuList []SortMenu `json:"sortMenu"`
+}
+
 type Dict struct {
 	Code   string `json:"code"`
 	Name   string `json:"name"`

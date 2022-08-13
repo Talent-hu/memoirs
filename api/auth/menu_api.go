@@ -105,9 +105,9 @@ func (this *MenuApi) IsHidden(ctx *gin.Context) {
 }
 
 func (this *MenuApi) SortMenu(ctx *gin.Context) {
-	var req []vo.SortMenu
+	var req vo.SortMenuList
 	_ = ctx.ShouldBindJSON(&req)
-	err := menuService.SortMenu(req)
+	err := menuService.SortMenu(req.SortMenuList)
 	if err != nil {
 		response.FailWithMessage(ctx, err.Error())
 		return
