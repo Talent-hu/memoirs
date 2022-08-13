@@ -74,3 +74,14 @@ func (this *MenuRepository) DeleteMenu(menuIds []uint) error {
 	err = global.DB.Unscoped().Where("menu_id in (?)", menuIds).Delete(&auth.RoleMenu{}).Error
 	return err
 }
+
+func (this *MenuRepository) UpdateByHidden(menuId uint, hidden *bool) error {
+	var menuModel auth.Menu
+	if errors.Is(global.DB.First(&menuModel, menuId).Error, gorm.ErrRecordNotFound) {
+		return errors.New("该菜单数据不存在")
+	}
+	err := global.DB.Model(&auth.Menu{}).
+		Where("id=?", menuId).
+		Update("hidden", hidden).Error
+	return err
+}

@@ -88,3 +88,18 @@ func (this *MenuApi) DeleteMenu(ctx *gin.Context) {
 	}
 	response.Ok(ctx)
 }
+
+func (this *MenuApi) IsHidden(ctx *gin.Context) {
+	var req vo.IsHidden
+	_ = ctx.ShouldBindJSON(&req)
+	if err := validate.Verify(req, validate.IsHiddenVerify); err != nil {
+		response.FailWithMessage(ctx, err.Error())
+		return
+	}
+	err := menuService.IsHidden(req.ID, req.Hidden)
+	if err != nil {
+		response.FailWithMessage(ctx, err.Error())
+		return
+	}
+	response.Ok(ctx)
+}

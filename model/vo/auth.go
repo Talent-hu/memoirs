@@ -92,6 +92,11 @@ type DeleteMenu struct {
 	MenuIds []uint `json:"menuIds"` // 菜单ID列表
 }
 
+type IsHidden struct {
+	ID     uint  `json:"menuId"`
+	Hidden *bool `json:"hidden"` // 是否隐藏列表
+}
+
 type Dict struct {
 	Code   string `json:"code"`
 	Name   string `json:"name"`

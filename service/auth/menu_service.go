@@ -83,3 +83,8 @@ func (menuService *MenuService) DeleteMenu(menuIds vo.DeleteMenu) error {
 	err := menuMapper.DeleteMenu(menuIds.MenuIds)
 	return err
 }
+
+func (menuService *MenuService) IsHidden(menuId uint, hidden *bool) error {
+	err := menuMapper.UpdateByHidden(menuId, hidden)
+	return err
+}
