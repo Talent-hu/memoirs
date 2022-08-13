@@ -7,7 +7,7 @@ type Menu struct {
 	Path       string `gorm:"type:varchar(64);unique;comment:路由path" json:"path"`
 	Name       string `gorm:"type:varchar(64);comment:路由名称" json:"name"`
 	Component  string `gorm:"type:varchar(64);comment:对应前端文件路径" json:"component"`
-	Hidden     *bool  `gorm:"comment:是否隐藏列表" json:"hidden"`
+	Hidden     *bool  `gorm:"default:0;comment:是否隐藏列表" json:"hidden"`
 	Sort       uint   `gorm:"type:int;comment:排序标记" json:"sort"`
 	Title      string `gorm:"type:varchar(32);comment:菜单名称" json:"title"`
 	Icon       string `gorm:"comment:菜单图标" json:"icon"`
