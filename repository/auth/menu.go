@@ -59,7 +59,7 @@ func (this *MenuRepository) QueryFirstMenuInfo(userId, superMenuId uint) ([]auth
 	err := global.DB.Table("user_role").
 		Joins("LEFT JOIN role_menu ON role_menu.role_id = user_role.role_id").
 		Joins("INNER JOIN menu ON menu.id = role_menu.menu_id").
-		Where("user_role.user_id = ? AND menu.parent_id = ? AND menu.has_btn = 0", userId, superMenuId).
+		Where("user_role.user_id = ? AND menu.parent_id = ? AND menu.has_btn = 0 AND menu.hidden=0", userId, superMenuId).
 		Order("menu.sort ASC,created_at ASC").
 		Scan(&menuList).Error
 	return menuList, err
