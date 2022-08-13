@@ -46,9 +46,10 @@ func (this *MenuRepository) Update(menu auth.Menu) error {
 func (this *MenuRepository) QueryMenuInfo(userId uint) ([]auth.Menu, error) {
 	var menuList []auth.Menu
 	err := global.DB.Table("user_role").
-		Joins("left join role_menu on role_menu.role_id = user_role.role_id").
-		Joins("inner join menu on menu.id = role_menu.menu_id").
+		Joins("LEFT JOIN role_menu ON role_menu.role_id = user_role.role_id").
+		Joins("INNER JOIN menu ON menu.id = role_menu.menu_id").
 		Where("user_role.user_id = ?", userId).
+		Order("menu.sort ASC").
 		Scan(&menuList).Error
 	return menuList, err
 }
@@ -56,15 +57,20 @@ func (this *MenuRepository) QueryMenuInfo(userId uint) ([]auth.Menu, error) {
 func (this *MenuRepository) QueryFirstMenuInfo(userId, superMenuId uint) ([]auth.Menu, error) {
 	var menuList []auth.Menu
 	err := global.DB.Table("user_role").
-		Joins("left join role_menu on role_menu.role_id = user_role.role_id").
-		Joins("inner join menu on menu.id = role_menu.menu_id").
-		Where("user_role.user_id = ? and menu.parent_id = ? and menu.has_btn = 0", userId, superMenuId).
+		Joins("LEFT JOIN role_menu ON role_menu.role_id = user_role.role_id").
+		Joins("INNER JOIN menu ON menu.id = role_menu.menu_id").
+		Where("user_role.user_id = ? AND menu.parent_id = ? AND menu.has_btn = 0", userId, superMenuId).
+		Order("menu.sort ASC").
 		Scan(&menuList).Error
 	return menuList, err
 }
 
-func (this *MenuRepository) DeleteMenu(menuIds []uint) (auth.Menu, error) {
+func (this *MenuRepository) DeleteMenu(menuIds []uint) error {
 	var menus auth.Menu
 	err := global.DB.Unscoped().Where("id in (?)", menuIds).Delete(&menus).Error
-	return menus, err
+	if err != nil {
+		return err
+	}
+	err = global.DB.Unscoped().Where("menu_id in (?)", menuIds).Delete(&auth.RoleMenu{}).Error
+	return err
 }

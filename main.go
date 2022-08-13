@@ -17,7 +17,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	//CreateTable()
+	CreateTable()
 	addr := fmt.Sprintf(":%s", global.AppConfig.NetConf.Port)
 	server := router.InitRouter()
 	_ = server.Run(addr)
@@ -25,7 +25,7 @@ func main() {
 
 func CreateTable() {
 	_ = global.DB.AutoMigrate(
-		auth.SysFunction{},
+		//auth.SysFunction{},
 		//&auth.Area{},
 		//&auth.SysDict{},
 		//&auth.SysDictItem{},
@@ -33,7 +33,7 @@ func CreateTable() {
 		//&auth.UserRole{},
 		//&auth.Role{},
 		//&auth.RoleMenu{},
-		//&auth.Menu{},
+		&auth.Menu{},
 		//&bank.SubjectCategory{},
 		//&bank.QuestionLabel{},
 		//&bank.QuestionSelect{},

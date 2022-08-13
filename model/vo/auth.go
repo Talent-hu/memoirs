@@ -70,9 +70,11 @@ type AddMenuRequest struct {
 	Icon      string `json:"icon"`      // 菜单图标
 	ParentId  uint   `json:"parentId"`  // 父级菜单ID
 	HasBtn    *bool  `json:"hasBtn"`    // 是否是按钮
+	Perm      string `json:"perm"`
 }
 
 type MenuTree struct {
+	ID        uint       `json:"menuId"`
 	Path      string     `json:"path"`      // 路由path
 	Name      string     `json:"name"`      // 路由名称
 	Component string     `json:"component"` // 对应前端文件路径
@@ -82,7 +84,7 @@ type MenuTree struct {
 	Icon      string     `json:"icon"`      // 菜单图标
 	ParentId  uint       `json:"parentId"`  // 父级菜单ID
 	HasBtn    *bool      `json:"hasBtn"`    // 是否是按钮
-	ID        uint       `json:"menuId"`
+	Perm      string     `json:"perm"`
 	Children  []MenuTree `json:"children"`
 }
 

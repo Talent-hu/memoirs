@@ -80,6 +80,6 @@ func BuildTree(list []vo.MenuTree, rootId uint) []vo.MenuTree {
 }
 
 func (menuService *MenuService) DeleteMenu(menuIds vo.DeleteMenu) error {
-	_, err := menuMapper.DeleteMenu(menuIds.MenuIds)
+	err := menuMapper.DeleteMenu(menuIds.MenuIds)
 	return err
 }
