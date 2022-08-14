@@ -98,8 +98,9 @@ type IsHidden struct {
 }
 
 type SortMenu struct {
-	MenuId uint `json:"menuId"`
-	Sort   uint `json:"sort"`
+	MenuId   uint `json:"menuId"`
+	Sort     uint `json:"sort"`
+	ParentId uint `json:"parentId"`
 }
 
 type SortMenuList struct {

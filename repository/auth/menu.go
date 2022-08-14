@@ -86,13 +86,14 @@ func (this *MenuRepository) UpdateByHidden(menuId uint, hidden *bool) error {
 	return err
 }
 
-func (this *MenuRepository) UpdateBySort(menuId, sort uint) error {
+func (this *MenuRepository) UpdateBySort(menuId, sort, parentId uint) error {
 	var menuModel auth.Menu
 	if errors.Is(global.DB.First(&menuModel, menuId).Error, gorm.ErrRecordNotFound) {
 		return errors.New("该菜单数据不存在")
 	}
 	err := global.DB.Model(&auth.Menu{}).
 		Where("id=?", menuId).
-		Update("sort", sort).Error
+		Update("sort", sort).
+		Update("parent_id", parentId).Error
 	return err
 }
