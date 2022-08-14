@@ -3,6 +3,7 @@ package router
 import (
 	"memoirs/router/auth"
 	"memoirs/router/bank"
+	"memoirs/router/file"
 )
 
 type RouterGroup struct {
@@ -12,6 +13,7 @@ type RouterGroup struct {
 	auth.SystemRouter
 	auth.AreaRouter
 	auth.CasbinRouter
+	file.FileRouter
 	bank.SubjectRouter
 }
 

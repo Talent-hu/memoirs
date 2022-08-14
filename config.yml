@@ -41,3 +41,10 @@ jwt:
   app-iss: localhost:8888
   expire-time: 604800
   buffer-time: 86400
+
+## minio对象存储配置
+minio:
+  endpoint: 101.132.251.60:9000
+  accessKey: minio
+  secret: minio123321
+  useSSL: false

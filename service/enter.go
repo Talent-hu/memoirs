@@ -3,6 +3,7 @@ package service
 import (
 	"memoirs/service/auth"
 	"memoirs/service/bank"
+	"memoirs/service/file"
 )
 
 type ServiceGroup struct {
@@ -13,6 +14,7 @@ type ServiceGroup struct {
 	auth.SystemService
 	auth.AreaService
 	auth.CasbinService
+	file.FileService
 	bank.SubjectService
 }
 

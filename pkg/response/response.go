@@ -48,3 +48,11 @@ func FailWithMessage(ctx *gin.Context, message string) {
 func FailWithDetail(ctx *gin.Context, status int, message string) {
 	resultJson(ctx, status, status, message, NULL_DATA)
 }
+
+func Result(ctx *gin.Context, err error) {
+	if err != nil {
+		FailWithMessage(ctx, err.Error())
+		return
+	}
+	Ok(ctx)
+}

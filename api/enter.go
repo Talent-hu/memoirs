@@ -3,6 +3,7 @@ package api
 import (
 	"memoirs/api/auth"
 	"memoirs/api/bank"
+	"memoirs/api/file"
 )
 
 type ApiGroup struct {
@@ -12,6 +13,7 @@ type ApiGroup struct {
 	auth.SystemApi
 	auth.AreaApi
 	auth.CasbinApi
+	file.ImageApi
 	bank.SubjectApi
 }
 

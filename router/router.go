@@ -22,6 +22,7 @@ func InitRouter() *gin.Engine {
 		RouterGroupApp.SystemRouter.InitSystemRouter(publicGroup)
 		RouterGroupApp.AreaRouter.InitAreaRouter(publicGroup)
 		RouterGroupApp.CasbinRouter.InitCasbinRouter(publicGroup)
+		RouterGroupApp.FileRouter.InitFileRouter(publicGroup)
 	}
 	{
 		RouterGroupApp.SubjectRouter.InitSubjectRouter(publicGroup)

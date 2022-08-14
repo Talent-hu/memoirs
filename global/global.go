@@ -1,6 +1,7 @@
 package global
 
 import (
+	"github.com/minio/minio-go/v7"
 	"github.com/spf13/viper"
 	"golang.org/x/sync/singleflight"
 	"gorm.io/gorm"
@@ -15,6 +16,6 @@ var (
 	Log                *logger.Logger
 	DB                 *gorm.DB
 	Redis              *redis.Client
+	Minio              *minio.Client
 	Concurrent_Control = &singleflight.Group{}
-	//Caches *cache.CacheManage
 )
