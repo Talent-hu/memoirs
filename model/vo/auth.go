@@ -70,6 +70,7 @@ type AddMenuRequest struct {
 	Icon       string `json:"icon"`      // 菜单图标
 	ParentId   uint   `json:"parentId"`  // 父级菜单ID
 	HasBtn     *bool  `json:"hasBtn"`    // 是否是按钮
+	Remark     string `json:"remark"`
 	Permission string `json:"permission"`
 }
 
@@ -85,6 +86,7 @@ type MenuTree struct {
 	ParentId   uint       `json:"parentId"`  // 父级菜单ID
 	HasBtn     *bool      `json:"hasBtn"`    // 是否是按钮
 	Permission string     `json:"permission"`
+	Remark     string     `json:"remark"`
 	Children   []MenuTree `json:"children"`
 }
 
